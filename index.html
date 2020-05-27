@@ -769,7 +769,7 @@
 			tr.appendChild(tdIdx)
 			let tdBtns = document.createElement('td')
 			let ipa = dataRow[dataRow.length - 1]
-			tdBtns.innerHTML = `<button  onclick="updateIPAText('${ipa}')">➕</button> <button onclick='playIPA("${ipa}")'>▶️</button> `
+			tdBtns.innerHTML = i === 0 ? '' : `<button  onclick="updateIPAText('${ipa}')">➕</button> <button onclick='playIPA("${ipa}")'>▶️</button> `
 			tr.appendChild(tdBtns)
 			dataRow.forEach(dataCell => {
 				let td = document.createElement('td')
