@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+	  body {
+		  font-family: arial, sans-serif;
+		  font-size: larger;
+	  }
+	  .audio {
+		  border: solid pink 4px;
+	  }
+	  .audioPossible {
+		  background-color: yellow;
+	  }
+	  .selPart {
+		  border: solid black 2px;
+	  }
+	  .selImgPart {
+	  }
+	  .mover {
+		  opacity: .1;
+	  }
+	  .lips {
+		stroke-width: 10;
+		fill: transparent;
+	  	stroke-linecap: round
+	  }
+	  .tongue {
+	  	stroke: palevioletred; 
+		stroke-width: 4; 
+		stroke-linecap: round
+	  }
+	  .throat {
+	  	  stroke: saddlebrown; 
+		  stroke-width: 25;
+		  fill: transparent;
+		  stroke-linecap: round
+	  }
+	  .breath {
+		stroke: dodgerblue;
+		stroke-width: 10;
+		fill: transparent;
+		marker-start: url(#arrow);
+	  }
+	  .dropbtn {
+		font-size: large;
+	  }
+	  .dropdown {
+	    position: relative;
+	    display: inline-block;
+		cursor: pointer;
+	  }
+	  .dropdown-content {
+	    display: none;
+	    position: absolute;
+		background-color: white;
+		padding: 6px;
+	    min-width: 200px;
+	    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	    z-index: 1;
+	  }
+	  .dropdown-content .option:hover {
+		  background-color: lightgrey;
+	  }
+	  .dropdown:hover .dropdown-content {
+		  display: block;
+	  }
+  </style>
+  <script type="text/javascript" src="https://rawcdn.githack.com/itinerarium/phoneme-synthesis/499583531c5013559ebb64e1e1eae928bd2f6528/mespeak.js"></script>
+	<script type="text/javascript">
+	  meSpeak.loadConfig("https://rawcdn.githack.com/itinerarium/phoneme-synthesis/499583531c5013559ebb64e1e1eae928bd2f6528/mespeak_config.json");
+	  meSpeak.loadVoice("https://rawcdn.githack.com/itinerarium/phoneme-synthesis/499583531c5013559ebb64e1e1eae928bd2f6528/en.json");
+	</script>
+</head>
+<body>
+	<!-- A universal language script based on the anatomy of speech. Symbols directly correspond to IPA characters.
+	
+	Uses:
+	- represent any language sound accurately, unlike a transliteration
+	- good for young kids to learn language sounds without the additional burden of memorizing abstract scripts
+	- help the deaf, blind and people with speech disorders to learn how to pronounce naturally
+	- learn new languages quickly by mapping unfamiliar scripts to it's anatomical mapping
+	- help speakers of non-phonetic languages, eg, English and Chinese, pronounce new words
+	- avoid confusion for multi-lingual language learners for languages that share the same script but assign different sounds to letters, eg, 'A' in Dutch and English have different sounds.
+
+	https://www.youtube.com/channel/UCFuOFZ0wFoHK2deKFldaLGA<br><br>
+-->
+<svg id="imageAlphabet" style="display: none" width="100" height="400" viewBox="100 100 1000 1000"></svg>
+<div>
+	<button onclick="updateIPAText(' ')">⌴ ➕</button>
+	<span>
+		<button onclick="playIPA(speechIPASeq)">▶️</button>
+		<button onclick="updateIPAText(null)">❌</button>
+		 <span id="imgLetterSeq"></span>
+		 <span id="langLetterSeq"></span>
+		 /<span id="ipaLetterSeq"></span>/
+	</span>
+	<span id="speechPlayer" style="position: absolute; top: .5%; left: 45%; display: none">
+		<button onclick="updateIPAText(selectedImgSpeechCodeIPA)">➕</button>
+		<button onclick="playIPA(selectedImgSpeechCodeIPA)">▶️</button>
+		<span id="addLetter"></span>
+	</span>
+
+ 	<div style="float: right">
+ 		<select onchange="selectKeyboard(event)">
+ 			<option value="imageSpeechPane">Speech Face</option>
+			<optgroup label="Vocals">
+	 			<option value="ipa">IPA</option>
+	 			<option value="graphemes">Dutch Graphemes</option>
+				<option value="more">More...</option>
+			</optgroup>
+			<optgroup label="Alphabet">
+	 			<option value="en">English Alphabet</option>
+	 			<option value="nl">Dutch Alphabet</option>
+				<option value="more">More...</option>
+			</optgroup>
+ 			<option value="asciiSpeechPane">ASCII Code</option>
+ 		</select>
+ 	</div>
+	<div style="float: right">&nbsp;&nbsp;</div>
+	<div id="selectLetter" class="dropdown" style="float: right">
+	  <button class="dropbtn">Select Vocal (Dutch and IPA) ▼</button>
+	  <div class="dropdown-content"></div>
+	</div>
+	<br><br>
+	
+</div>
+<div id="imageSpeechPane" class="keyboard">
+
+	<svg>
+		<defs>
+		    <marker id="arrow" viewBox="0 0 20 20" refX="5" refY="5"
+		        markerWidth="6" markerHeight="6"
+		        orient="auto-start-reverse">
+		      <path d="M 0 0 L 10 5 L 0 10 z" fill="dodgerblue" />
+		    </marker>
+		</defs>
+	</svg>
+	
+	<svg id="imageSpeechPic" style="position:fixed; top:2em; left:0; height:95%; width:100%; border: solid grey .1em" viewBox="190 40 950 480">
+		
+		<g id="imageSpeech">
+			
+			<path id="sideFaceImg" d="m5069.8,5000.8c-632,-49.8 -1221.9,-201.1 -1706.5,-436.7c-836.9,-406 -1354.1,-1061 -1539.8,-1944c-28.7,-143.6 -44,-314.1 -57.5,-670.3c-24.9,-697.1 -49.8,-794.8 -316,-1235.3c-159,-264.3 -409.9,-775.7 -425.2,-867.6c-17.2,-109.2 38.3,-233.7 134.1,-296.8c76.6,-51.7 84.3,-51.7 438.6,-57.5l360.1,-7.7l-3.8,-691.4c-5.7,-792.9 -6,-953.3 -10.2,-1158.7c-4.2,-205.4 -59.9,-340.2 109.9,-479c169.8,-138.8 760.3,-84.1 1269.7,-93.6l453.9,-9.6l0,-792.9c0,-882.9 0,-881 126.4,-976.8l70.9,-55.5l2078,-5.8c2043.6,-3.8 2080,-3.8 2156.6,34.5c97.7,46 160.9,137.9 176.2,250.9c15.3,105.3 -9.6,164.7 -166.6,425.2c-360.1,589.9 -507.5,1154.9 -455.8,1739c46,543.9 195.4,953.8 595.6,1645.2c222.2,383 270,476.9 350.5,687.6c136,352.4 199.2,714.4 250.9,1400c34.5,476.9 23,701 -51.7,1051.5c-272,1256.4 -1300.4,2237 -2622,2499.4c-335.3,67 -760.4,82.3 -1216.3,45.9z" fill="transparent" stroke="grey" color="#FBF6E9" stroke-width="10" transform="translate(80,100) scale(0.12,-0.12) " />
+
+			<g id="lipsImg" transform="translate(242,150) scale(.75)">
+				<defs>
+					<g id="upper-center-lip">
+						<path id="right-upper-center-lip" d="M 75 -50 Q 100 -50 125 -30"/>
+						<use href="#right-upper-center-lip" transform="translate(150) scale(-1,1)"/>
+					</g>
+					<g id="upper-side-lip">
+						<line id="unrounded-left-lip" x1="135" y1="-22" x2="160" y2="-2" />
+						<use href="#unrounded-left-lip" transform="translate(150) scale(-1,1)"/>
+					</g>
+					
+					<g id="closed-lips">
+						<line x1="0" y1="0" x2="100" y2="0" />
+					</g>
+					
+					<g id="teeth-inserted-lips">
+						<polyline id="right-teeth-inserted-lips" transform="translate(10,-35)" points="100,275 110,245 140,260" />
+						<use href="#right-teeth-inserted-lips" transform="translate(191) scale(-1,1)">
+					</g>
+					
+					<g id="lower-center-lip">
+						<use href="#upper-center-lip" transform="scale(1, -1)">
+					</g>
+					<g id="lower-side-lip">
+						<use href="#upper-side-lip" transform="scale(1,-1)"/>	
+					</g>
+				</defs>
+	
+				<use href="#upper-center-lip" x="20" y="75" stroke="red" class="unrounded_open rounded_open lips mover"/>
+				<use href="#upper-side-lip" x="20" y="75" stroke="red" class="unrounded_open lips mover"/>
+	
+				<use href="#upper-center-lip" x="20" y="95" stroke="orange" class="unrounded_near_open lips mover"/>
+				<use href="#upper-side-lip" x="20" y="95" stroke="orange" class="unrounded_near_open lips mover"/>
+	
+				<use href="#upper-center-lip" class="rounded_open_mid unrounded_open_mid lips mover" x="20" y="115" stroke="yellow" />
+				<use href="#upper-side-lip" class="unrounded_open_mid lips mover" x="20" y="115" stroke="yellow" />
+	
+				<use href="#upper-center-lip" x="20" y="135" stroke="green" class="rounded_mid unrounded_mid lips mover"/>
+				<use href="#upper-side-lip" x="20" y="135" stroke="mediumvioletred" class="unrounded_mid lips mover"/>
+	
+				<use href="#upper-center-lip" x="20" y="155" stroke="blue" class="rounded_close_mid unrounded_close_mid lips mover"/>
+				<use href="#upper-side-lip" x="20" y="155" stroke="blue" class="unrounded_close_mid lips mover"/>
+	
+				<use href="#upper-center-lip" x="20" y="175" stroke="indigo" class="rounded_near_close unrounded_near_close lips mover"/>
+				<use href="#upper-side-lip" x="20" y="175" stroke="indigo" class="unrounded_near_close lips mover"/>
+	
+				<use href="#upper-center-lip" x="20" y="195" stroke="violet" class="rounded_close unrounded_close lips mover"/>
+				<use href="#upper-side-lip" x="20" y="195" stroke="violet" class="unrounded_close lips mover"/>
+
+				<use href="#closed-lips" class="bilabial labiodental lips mover" x="45" y="188" stroke="mediumvioletred"/>
+				
+				<use href="#teeth-inserted-lips" class="labiodental lips mover" x="0" y="-4" stroke="mediumvioletred" />
+
+				<use href="#lower-center-lip" x="20" y="335" stroke="red" class="unrounded_open rounded_open lips mover"/>
+				<use href="#lower-side-lip" x="20" y="335" stroke="red" class="unrounded_open lips mover"/>
+	
+				<use href="#lower-center-lip" x="20" y="315" stroke="orange" class="unrounded_near_open lips mover"/>
+				<use href="#lower-side-lip" x="20" y="315" stroke="orange" class="unrounded_near_open lips mover"/>
+	
+				<use href="#lower-center-lip" x="20" y="295" stroke="yellow" class="rounded_open_mid unrounded_open_mid lips mover"/>
+				<use href="#lower-side-lip" x="20" y="295" stroke="yellow" class="unrounded_open_mid lips mover"/>
+	
+				<use href="#lower-center-lip" x="20" y="275" stroke="green" class="rounded_mid unrounded_mid lips mover"/>
+				<use href="#lower-side-lip" x="20" y="275" stroke="mediumvioletred" class="unrounded_mid lips mover"/>
+	
+				<use href="#lower-center-lip" x="20" y="255" stroke="blue" class="rounded_close_mid unrounded_close_mid lips mover"/>
+				<use href="#lower-side-lip" x="20" y="255" stroke="blue" class="unrounded_close_mid lips mover"/>
+	
+				<use href="#lower-center-lip" x="20" y="235" stroke="indigo" class="rounded_near_close unrounded_near_close lips mover"/>
+				<use href="#lower-side-lip" x="20" y="235" stroke="indigo" class="unrounded_near_close lips mover"/>
+	
+				<use href="#lower-center-lip" x="20" y="215" stroke="violet" class="rounded_close unrounded_close lips mover"/>
+				<use href="#lower-side-lip" x="20" y="215" stroke="violet" class="unrounded_close lips mover"/>
+			</g>
+		
+			<g id="tongueImg" height="400" width="400" transform="translate(420,180) scale(4)">
+				<g id="mouthTop">
+					<path id="teeth" transform="translate(-12, -21) scale(.1)" stroke="palevioletred" fill="transparent" stroke-width="10" stroke-linecap="round" d="M 50 300 Q 50 200 50 200 Q 100 150 150 200 L 150 300 L 150 200 Q 200 150 250 200 L 250 300 L 50 300"/>
+		
+					<path id="mouthRoof" transform="scale(0.31 .2) translate(-170 -260)" d="M 360 220 Q 260 200 235 230 Q 240 270 220 240 Q 220 280 200 240 Q 260 180 366 213 Q 440 230 455 240 Q 440 300 440 240 Z" fill="palevioletred"/>
+				</g>
+	
+			  <line id="tongueRest" class="rest mover tongue" x1="10" y1="55" x2="45" y2="55" />
+  
+			  <line class="dental mover tongue" x1="2" y1="16" x2="20" y2="26" />
+			  <line class="dental front mover tongue" x1="23" y1="30" x2="35" y2="45" />
+  
+			  <line class="alveolar mover tongue" x1="18" y1="3" x2="30" y2="20" />
+			  <line class="alveolar near_front mover tongue" x1="32" y1="25" x2="42" y2="45" />
+  
+  			  <path class="retroflex mover tongue" d="M 32 -2 Q 30 10 50 45" fill="transparent"/>
+				  
+			  <line class="post_alveolar mover tongue" x1="37" y1="-2" x2="49" y2="17" />
+			  <line class="post_alveolar central mover tongue" x1="50" y1="22" x2="55" y2="45" />
+  
+			  <line class="palatal mover tongue" x1="58" y1="-1" x2="65" y2="18" />
+			  <line class="palatal near_back mover tongue" x1="65" y1="23" x2="60" y2="45" />
+  
+			  <line class="velar mover tongue" x1="75" y1="0" x2="80" y2="20" />
+			  <line class="velar back mover tongue" x1="80" y1="25" x2="65" y2="45" />
+			</g>
+		
+			<g id="throatImg" transform="translate(720,360) scale(.6)">
+			  <defs>
+				<circle id="throatUnvoiced" cx="50" cy="50" r="70" />
+				<path id="throatVoiced" transform="translate(-40,-100) scale(.9,.5)" d="M 100 400 Q 150 350 100 300 Q 50 250 100 200 " />
+			  </defs>
+			  <use href="#throatUnvoiced" class="unvoiced throat mover"/>
+			  <use href="#throatVoiced" class="voiced throat mover"/>
+			</g>
+			
+			<g id="breathImg" transform="translate(940,90) scale(.6)">
+				<defs>
+	
+					<line id="open-breath"  x1="35" y1="-10" x2="100" y2="-10"     />
+
+					<path id="glide-approximant-breath" d="M 0 0 Q 50 -50 100 0"  />
+
+					<g id="lateral-approximant-breath" >
+						<line  x1="0" y1="0" x2="100" y2="20"     />
+						<line  x1="0" y1="40" x2="100" y2="20"     />
+					</g>
+
+					<path id="sibilant-affricate-breath" transform="translate(0,-50)" d="M 0 50 L 50 75 Q 75 25 100 75"  />
+
+					<path id="non-sibilant-fricative-breath" transform="translate(0, -50)" d="M 0 75 L 50 75 Q 75 25 100 75" />
+
+					<path id="sibilant-fricative-breath" d="M 0 0 Q 25 25 50 0 Q 75 -25 100 0"  />
+
+					<polyline id="tap-breath" points="0,0 50,-50 100,0" />
+	
+					<polyline id="trill-breath" points="0,0 35,-40 50,-25 65,-40 100,0"  />
+
+					<g id="plosive-breath" >
+						<path d="M 0 0 Q 20 20 40 20 Q 40 0 60 0 Q 90 0 90 25 "  />
+						<path d="M 0 40 Q 20 20 40 20" />
+					</g>
+
+					<line id="nasal-breath" x1="0" y1="0" x2="80" y2="-60" />
+				</defs>
+				<use href="#nasal-breath" x="0" y="0" class="nasal breath mover"/>				
+				<use href="#glide-approximant-breath" x="0" y="50"  class="glide_approximant breath mover"/>
+				<use href="#lateral-approximant-breath" x="0" y="100" class="lateral_approximant breath mover"/>
+				<use href="#sibilant-affricate-breath" x="0" y="180" class="sibilant_affricate breath mover"/>
+				<use href="#non-sibilant-fricative-breath" x="0" y="250" class="non_sibilant_fricative breath mover"/>
+				<use href="#sibilant-fricative-breath" x="0" y="350" class="sibilant_fricative breath mover"/>
+				<use href="#tap-breath" x="0" y="450" class="tap breath mover"/>
+				<use href="#trill-breath" x="0" y="540" class="trill breath mover"/>
+				<use href="#plosive-breath" x="0" y="600" class="plosive breath mover"/>
+				<use href="#open-breath" x="0" y="700" class="open breath mover"/>
+				<use id="bigBreath" class="breath" x="-110" y="120" transform="scale(2.3)"/>
+			</g>
+		</g>
+		
+		<text id="displayLetter" text-anchor="middle" x="600" y="100" style="fill: grey; font: 3em sans-serif;" ></text>
+		<use id="displayImageLetter" transform="translate(350, 90) scale(.1)">
+	</svg>
+</div>
+
+<div id="asciiSpeechPane" class="keyboard" style="display: none">
+	<div id="addAscii" style="display: none">
+		<button onclick="updateIPAText(selectedSpeechCodeIPA)">➕</button>
+		<button onclick="playIPA(selectedSpeechCodeIPA)">▶️</button>
+		<span id="speechAsciiLetter" style="font-size: 2em"></span>
+	</div>
+	<div id="speechSelector"></div>
+</div>
+
+<div id="speechKeyboardPane" class="keyboard" style="display: none">
+	<table id="speechKeyboard" border="1px solid black"></table>
+</div>
+<script src="common/ipa.js"></script>
+<script>
+
+// ------------ Face Cutaway Keyboard ------------------------
+
+	let isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/)
+	let iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
+		
+	let wordLists = {
+		"en":  "English",
+		"nl": "Dutch",
+		"ipa": "Vocal Type",
+		"graphemes": "Grapheme"
+	}
+    let speechIPASeq = "",
+		selectedImgSpeechCodeIPA,
+		selectedImgSpeechCodePart = [], 
+		prevSelectedImgSpeechCodePart, 
+		locUrl = new URL(location), 
+		ipaText = locUrl.searchParams.get('ipa'),
+		speechCodeChoices = {},
+		selClass = 'selImgPart',
+		bigBreathElem
+	
+    if (ipaText) {
+		updateIPAText(ipaText, true)
+    }
+	onpopstate = e => {
+		speechIPASeq = ""
+		updateIPAText(new URL(location).searchParams.get('ipa'), true)
+	}
+	document.getElementById("imageSpeechPic").addEventListener("click", findAndPronounce)
+
+	let imageAlphabet = document.getElementById("imageAlphabet")
+	speechCodesArray.forEach(code => {
+		selectElemsBySpeechCode(code)
+		let imageLetter = document.getElementById("imageSpeech").cloneNode(true)
+		imageLetter.querySelectorAll('[id]').forEach(e => {
+			if (e.id === 'bigBreath')
+				e.style.strokeWidth = '20'
+			if (e.id === 'mouthTop' || e.id === 'sideFaceImg')
+				e.parentNode.removeChild(e)
+			else 
+				e.removeAttribute('id')
+		})
+		imageLetter.querySelectorAll('.mover').forEach(e => {
+			if (e.classList.contains('selImgPart')) {
+				if (e.classList.contains('lips'))
+					e.style.strokeWidth = '40'
+				else if (e.classList.contains('tongue'))
+					e.style.strokeWidth = '10'
+				else if (e.classList.contains('throat'))
+					e.style.strokeWidth = '40'	
+			} else
+				e.parentNode.removeChild(e)
+		})
+		imageLetter.id = code + "Img"
+		imageAlphabet.appendChild(imageLetter)
+	})
+	clearSelectedElems()
+	addLettersToSelect()
+	
+	function addLettersToSelect() {
+		let select = document.querySelector('#selectLetter .dropdown-content')
+		let dgrid = []
+		addLetters(dgrid, "ipa")
+		dgrid.forEach(row => {
+			let opt = document.createElement('div')
+			opt.classList.add('option')
+			opt.value = row[row.length - 1] // ipa letter
+			opt.innerHTML = getDisplayLetter(opt.value, true, true)
+			opt.addEventListener("click", e => playSpeechCode(ipa[e.target.value].speechCode))
+			select.appendChild(opt)
+		})
+	}
+	
+	// addIPAText
+	// null - delete all text
+	// ' ' (space) - add word separator
+	// undefined - do nothing
+	function updateIPAText(addIPAText, skipHistory) {
+		if (addIPAText === undefined) 
+			return
+		else if (addIPAText === null) 
+			speechIPASeq = ""
+		else if (addIPAText)
+			speechIPASeq += addIPAText
+		let langText = "", imgLetters = "", ipaChars = speechIPASeq.split('')
+		document.getElementById('ipaLetterSeq').innerHTML = speechIPASeq
+		
+		for (let i = 0; i < ipaChars.length; i++) {
+			let oneChar = ipaChars[i],
+				twoChars = oneChar + ipaChars[i + 1],
+				threeChars = twoChars + ipaChars[i + 2]
+				fourChars = threeChars + ipaChars[i + 3]
+			if (ipa[twoChars] || ipa[threeChars] || ipa[fourChars]) {
+				let chars
+				if (ipa[fourChars]) {
+					chars = fourChars
+					i += 3
+				} else if (ipa[threeChars]) {
+					chars = threeChars
+					i += 2
+				} else {
+					chars = twoChars
+					i++
+				}
+				imgLetters += getIPALetterImage(chars)
+				langText += getDisplayLetter(chars)
+			} else {
+				if (oneChar === ' ') {
+					imgLetters += '&nbsp;'
+					langText += '&nbsp;'
+				} else {
+					imgLetters += getIPALetterImage(oneChar)
+					langText += getDisplayLetter(oneChar)
+				}
+			}
+		}
+		document.getElementById('imgLetterSeq').innerHTML = imgLetters
+		document.getElementById('langLetterSeq').innerHTML = langText
+		if (!skipHistory)
+			history.pushState('', '', speechIPASeq === '' ? new URL(location).href.split('?')[0] : `?ipa=${speechIPASeq}`)
+			
+	}
+	
+  function findAndPronounce(event) {
+		let elem = event.target
+	  	if (elem.id === 'bigBreath') 
+			elem = bigBreathElem
+	    if (elem.classList.contains('mover')) {
+		    let [control, controlValue] = selectControlValueByElem(elem)
+			if (selectedImgSpeechCodePart[0] !== control)
+				prevSelectedImgSpeechCodePart = selectedImgSpeechCodePart
+			selectedImgSpeechCodePart = [control, controlValue]
+			if (!speechCodeChoices[controlValue]) {
+				speechCodeChoices[controlValue] = speechCodesArray.filter(c => c.match(`\\b${controlValue}\\b`))
+			}
+			let selSpeechCode = speechCodeChoices[controlValue][0]
+			if (speechCodeChoices[controlValue].length === 1)
+				delete speechCodeChoices[controlValue]
+			else
+				speechCodeChoices[controlValue].shift()
+			playSpeechCode(selSpeechCode)
+		}
+		return false
+  }
+  
+  function playSpeechCode(speechCode) {
+		selectElemsBySpeechCode(speechCode)
+		selectedImgSpeechCodeIPA = speechCodes[speechCode].ipa
+		if (document.getElementById("speechPlayer").style.display === 'none') {
+			document.getElementById("speechPlayer").style.display = 'inline'
+			document.getElementById("selectLetter").style.display = 'inline'
+			document.getElementById("displayImageLetter").href.baseVal = '#imageSpeech'
+		}
+		document.getElementById("addLetter").innerHTML = getDisplayLetter(selectedImgSpeechCodeIPA, true, true)
+		document.getElementById("displayLetter").innerHTML = getDisplayLetter(selectedImgSpeechCodeIPA, true)
+		playIPA(selectedImgSpeechCodeIPA)
+  }
+  
+  function getDisplayLetter(ipaLetter, showIPA, showIPAImage) {
+	let langTxt = ipa[ipaLetter] && ipa[ipaLetter].langs && ipa[ipaLetter].langs.nl && ipa[ipaLetter].langs.nl.graphemes ? ipa[ipaLetter].langs.nl.graphemes.toString() : '?'
+	let dispLetter = ""
+	dispLetter = langTxt === ipaLetter ? ipaLetter : langTxt
+	if (langTxt !== ipaLetter && showIPA)
+		dispLetter += ` /${ipaLetter}/`
+	if (showIPA && showIPAImage)
+		dispLetter = ` ${getIPALetterImage(ipaLetter)} ${dispLetter}`
+	return dispLetter
+  }
+  
+  function selectElemsBySpeechCode(code) {
+	clearSelectedElems()
+  	code.split(':').forEach((cv, i) => selectControlValue(speechControlsArray[i], cv))
+  }
+  
+  function selectControlValue(control, controlValue) {
+	let elems = document.querySelectorAll(`#imageSpeechPic .${control}.${controlValue}.mover`)
+  	elems.forEach(el => {
+  	  el.style.opacity = '1'
+  	  el.classList.add(selClass)
+  	})
+  	if (control === 'breath' && elems.length > 0) {
+  		document.getElementById("bigBreath").href.baseVal = elems[0].href.baseVal
+		bigBreathElem = elems[0]
+  	}	
+  }
+  
+  function selectControlValueByElem(elem) {
+      if (elem.classList.contains('mover')) {
+  		let control = getControl(elem), controlValue, elems = []
+		  
+		if (control === 'tongue') {
+			controlValue = getTongueValue(elem)
+		} else if (control === 'lips') {
+			controlValue = getLipsValue(elem)
+		} else { // breath and throat
+			controlValue = Object.keys(speechControls[control]).find(val => elem.classList.contains(val))
+		}
+		return [control, controlValue]
+      }
+	  return []
+  }
+  
+  function clearSelectedElems() {
+	let prevElems = document.querySelectorAll(`#imageSpeechPic .mover.${selClass}`)
+	prevElems.forEach(el => {
+	  el.style.opacity = '.1'
+	  el.classList.remove(selClass)
+	})
+	document.getElementById("bigBreath").href.baseVal = ""
+	bigBreathElem = undefined
+  }
+  
+  function getLipsValue(elem) {
+	  if (elem.classList.contains('lips')) {
+		  if (elem.classList.contains('unrounded_open') && elem.classList.contains('rounded_open')) {
+			  return 'rounded_open'
+		  } else if (elem.classList.contains('unrounded_open')) {
+		 	 return 'unrounded_open'
+		  }	else if (elem.classList.contains('unrounded_near_open')) {
+		  	 return 'unrounded_near_open'
+		  } else if (elem.classList.contains('unrounded_open_mid') && elem.classList.contains('rounded_open_mid')) {
+			  return 'rounded_open_mid'
+		  } else if (elem.classList.contains('unrounded_open_mid')) {
+		 	 return 'unrounded_open_mid'
+		  } else if (elem.classList.contains('unrounded_mid') && elem.classList.contains('rounded_mid')) {
+			  return 'rounded_mid'
+		  } else if (elem.classList.contains('unrounded_mid')) {
+		 	 return 'unrounded_mid'
+		  } else if (elem.classList.contains('unrounded_close_mid') && elem.classList.contains('rounded_close_mid')) {
+			  return 'rounded_close_mid'
+		  } else if (elem.classList.contains('unrounded_close_mid')) {
+		 	 return 'unrounded_close_mid'
+		  } else if (elem.classList.contains('unrounded_near_close') && elem.classList.contains('rounded_near_close')) {
+			  return 'rounded_near_close'
+		  } else if (elem.classList.contains('unrounded_near_close')) {
+		 	 return 'unrounded_near_close'
+		  } else if (elem.classList.contains('unrounded_close') && elem.classList.contains('rounded_close')) {
+			  return 'rounded_close'
+		  } else if (elem.classList.contains('unrounded_close')) {
+		 	 return 'unrounded_close'
+		  }	else if (elem.classList.contains('bilabial')) {
+		  	 return 'bilabial'
+		  } else if (elem.classList.contains('labiodental')) {
+		  	 return 'labiodental'
+		  } 
+	  }
+	  return ''
+  }
+  
+  function getTongueElems(elem) {
+	let elems = [elem]
+	if (elem.classList.contains('tongue')) {
+		if (elem.classList.contains('dental') && !elem.classList.contains('front'))
+			elems.push(document.querySelector('.tongue.mover.front'))
+		else if (elem.classList.contains('alveolar') && !elem.classList.contains('near_front'))
+			elems.push(document.querySelector('.tongue.mover.near_front'))
+		else if (elem.classList.contains('post_alveolar') && !elem.classList.contains('central'))
+			elems.push(document.querySelector('.tongue.mover.central'))
+		else if (elem.classList.contains('palatal') && !elem.classList.contains('near_back'))
+			elems.push(document.querySelector('.tongue.mover.near_back'))
+		else if (elem.classList.contains('velar') && !elem.classList.contains('back'))
+			elems.push(document.querySelector('.tongue.mover.back'))
+	}
+	return elems
+  }
+  
+  function getTongueValue(elem) {
+    let value = ''
+  	if (elem.classList.contains('tongue')) {
+  		if (elem.classList.contains('dental'))
+  			value = elem.classList.contains('front') ? 'front' : 'dental'
+		else if (elem.classList.contains('alveolar'))
+			value = elem.classList.contains('near_front') ? 'near_front' : 'alveolar'
+		else if (elem.classList.contains('post_alveolar'))
+			value = elem.classList.contains('central') ? 'central' : 'post_alveolar'
+		else if (elem.classList.contains('palatal'))
+			value = elem.classList.contains('near_back') ? 'near_back' : 'palatal'
+		else if (elem.classList.contains('velar'))
+			value = elem.classList.contains('back') ? 'back' : 'velar'
+		else if (elem.classList.contains('rest'))
+			value = 'rest'
+		else if (elem.classList.contains('retroflex'))
+			value = 'retroflex'
+  	}
+  	return value
+  }
+  
+  function getControl(elem) {
+	  if (elem.classList.contains('breath'))
+		  return 'breath'
+	  else if (elem.classList.contains('lips'))
+		  return 'lips'
+	  else if (elem.classList.contains('tongue'))
+		  return 'tongue'
+	  else if (elem.classList.contains('throat'))
+		  return 'throat'
+  }
+  
+  function getIPALetterImage(ipaLetter) {
+  	return ipa[ipaLetter] && ipa[ipaLetter].speechCode ? getSpeechCodeImg(ipa[ipaLetter].speechCode) : (ipaLetter == undefined || ipaLetter.trim() === '' ? '' : '🤔')
+  }
+  
+  function getSpeechCodeImg(code, showAscii) {
+	  if (showAscii) {
+		let states = code.split(':')
+		return speechControls.breath[states[0]].img + speechControls.lips[states[1]].img + speechControls.tongue[states[2]].img + speechControls.throat[states[3]].img
+	  } else {
+	  	let x = 606 + (code.startsWith('open:') ? -135 : 0), xDiff = 560
+		return `<svg width="39" height="20" style="margin: 0; padding: 0; border: solid silver .01em" viewBox="${x} 300 ${x + xDiff} 550">
+			<use href="#${code}Img" transform="scale(1.9)"></svg>`
+	  }
+	}
+	
+	let ipaArray, ipaIdx = 0
+	
+	function playIPA(text) {
+		ipaArray = text.split(' ')
+		ipaIdx = 0
+		if (ipaArray.length > 0)
+			playIPAIndex()
+	}
+	
+	function playIPAIndexFunc() {
+		if (ipaArray && ipaIdx < ipaArray.length) {
+			let w = ipaArray[ipaIdx].trim()
+			ipaIdx++
+			if (ipa[w] && ipa[w].audio && !(isSafari || iOS)){
+				playIPAVoiceSamples(w)
+			} else if (w !== '') {
+				playComputerGeneratedIPAVoice(w)
+			} else {	// w === ''
+				playIPAIndex()
+			}
+		}
+	}
+	function playIPAIndex() {
+		if (ipaArray)
+			if (ipaIdx === 0) {
+				playIPAIndexFunc()
+			} else if (ipaIdx < ipaArray.length) {
+				setTimeout(playIPAIndexFunc, 1000)
+			}
+	}
+	
+	function playIPAVoiceSamples(text) {
+		//let playlist = []
+		if (ipa[text] && ipa[text].audio) {
+			let audio = new Audio()
+			audio.src = ipa[text].audio
+			audio.addEventListener("ended", playIPAIndex)
+			audio.play().catch(error => {
+		        // Auto-play was prevented
+		        // Show a UI element to let the user manually start playback
+		    }).then(() => {
+		        // Auto-play started
+		    })
+		}
+	}
+	
+	function hasIPA(text) {
+		if (ipa[text] && ipa[text].speechCode)
+			return true
+		for (let ipaChar of text.split('')) {
+			if (!ipa[ipaChar] || !ipa[ipaChar].speechCode)
+				return false
+		}
+		return true
+	}
+	
+	let currentKeyboard = "imageSpeechPane"
+	
+	function selectKeyboard(e) {
+		if (e.target.value === "more") {
+			alert('We are looking for contributors. Interested? Please follow the instructions on the project homepage for submitting your contributions. Thanks.')
+			e.target.value = currentKeyboard
+		}
+		currentKeyboard = e.target.value
+		let selKeyboardId = e.target.value === "imageSpeechPane" || e.target.value === "asciiSpeechPane" ? e.target.value : "speechKeyboardPane"
+		document.querySelectorAll('.keyboard').forEach(kb => kb.style.display = kb.id === selKeyboardId ? 'block' : 'none')
+		if (selKeyboardId === "imageSpeechPane") {
+			if (document.getElementById("addLetter").innerHTML !== '')
+				document.getElementById('speechPlayer').style.display = 'inline'
+			document.getElementById("selectLetter").style.display = 'inline'
+		} else {
+			document.getElementById('speechPlayer').style.display = 'none'
+			document.getElementById("selectLetter").style.display = 'none'
+		}
+			
+		if (selKeyboardId === "speechKeyboardPane") {
+			let dataGrid = []
+			let lang = e.target.value
+			if (lang === 'graphemes') {
+				dataGrid.push(['Dutch', 'Visual Vocal/IPA', 'IPA'])
+				Object.entries(graphemes.nl).forEach(([grapheme, ipas]) => {
+					ipas.forEach(ipa => {
+						dataGrid.push([grapheme, getVisualScript(ipa), ipa])
+					})
+				})
+			} else {
+				dataGrid.push([wordLists[lang], wordLists[getTransliterationLang(lang)], 'Visual Vocal/IPA', 'IPA'])
+				addLetters(dataGrid, lang)
+			}
+			generateSpeechTable(dataGrid, lang)
+		}
+	}
+	
+	function getTransliterationLang(lang) {
+		return lang === "en" || lang === "ipa" ? "nl" : "en"
+	}
+	
+	function addLetters(dataGrid, lang) {
+		let translit = getTransliterationLang(lang)
+		let alphas = Object.entries(lang === "ipa" ? speechCodes : alphabets[lang])
+		for (let y = 0; y < alphas.length; y++) {
+			let [word, langs] = alphas[y]
+			let translitText = ""
+			if (langs[translit])
+				translitText = langs[translit]
+			else if (langs.ipa 
+					&& ipa[langs.ipa] 
+					&& ipa[langs.ipa].langs
+					&& ipa[langs.ipa].langs[translit]
+					&& ipa[langs.ipa].langs[translit].graphemes)
+				translitText = ipa[langs.ipa].langs[translit].graphemes.toString()
+			dataGrid.push([lang === "ipa" ? word.replace(/:/gi, ', ').replace(/_/gi, '-') : word, translitText, getVisualScript(langs.ipa), langs.ipa])
+		}
+	}
+ 	
+	function getVisualScript(ipaTxt) {
+		let visualScriptTxt = ""
+		if (ipa[ipaTxt] && ipa[ipaTxt].speechCode) {
+			visualScriptTxt = getSpeechCodeImg(ipa[ipaTxt].speechCode)
+		} else {
+			for (let ipaChar of ipaTxt.split('')) {
+				if (ipa[ipaChar] && ipa[ipaChar].speechCode)
+					visualScriptTxt += getSpeechCodeImg(ipa[ipaChar].speechCode)
+			}
+		}
+		return visualScriptTxt
+	}
+	
+	function generateSpeechTable(dataGrid) {
+		let table = document.getElementById("speechKeyboard")
+		table.querySelectorAll('tr').forEach(tr => tr.parentNode.removeChild(tr))
+		dataGrid.forEach((dataRow, i) => {
+			let tr = document.createElement('tr')
+			let tdIdx = document.createElement('td')
+			tdIdx.innerHTML = `${i + 1}.`
+			tr.appendChild(tdIdx)
+			let tdBtns = document.createElement('td')
+			let ipa = dataRow[dataRow.length - 1]
+			tdBtns.innerHTML = `<button  onclick="updateIPAText('${ipa}')">➕</button> <button onclick='playIPA("${ipa}")'>▶️</button> `
+			tr.appendChild(tdBtns)
+			dataRow.forEach(dataCell => {
+				let td = document.createElement('td')
+				td.innerHTML = dataCell
+				tr.appendChild(td)
+			})
+			table.appendChild(tr)
+		})
+	}
+	
+	function removeSpeechSelectorClass(className) {
+		let elems = document.getElementById('speechSelector').querySelectorAll(`.${className}`)
+		elems.forEach(e => {
+			e.classList.remove(className)
+		})
+	}
+	
+	function playComputerGeneratedIPAVoice(uipa) {
+      // nothing to process      
+      if (uipa == null || uipa.length == 0) {
+        return
+      }
+
+      //translate
+      var mappings = [
+        { 'src': /^\s*\//g, 'dest': '' },
+        { 'src': /\/\s*$/g, 'dest': '' },
+
+        { 'src': /(\.)/g, 'dest': '%' },
+        { 'src': /(\u02c8)/g, 'dest': '\'' },
+        { 'src': /(\u02cc)/g, 'dest': ',' },
+        { 'src': /(\u0251)/g, 'dest': 'A:' },
+        { 'src': /(\u02d0)/g, 'dest': ':' },
+        { 'src': /(\u0251\u02d0)/g, 'dest': 'A' },
+        { 'src': /(\u0251\u0279)/g, 'dest': 'A' },
+        { 'src': /(a\u02d0)/g, 'dest': 'A' },
+
+        // feedback from formantzero via r/linguistics
+        { 'src': /(\u0329)/g, 'dest': 'r' },  
+    
+        // feedback from scharfes_s via r/linguistics
+        { 'src': /(\u027e)/g, 'dest': 't' },  
+
+        { 'src': /(\xe6)/g, 'dest': 'a' },
+        { 'src': /(a)/g, 'dest': 'a' },
+        { 'src': /(\u028c)/g, 'dest': 'V' },
+        { 'src': /(\u0252)/g, 'dest': '0' },
+        { 'src': /(\u0254)/g, 'dest': '0' },
+        { 'src': /(a\u028a)/g, 'dest': 'aU' },
+        { 'src': /(\xe6\u0254)/g, 'dest': 'aU' },
+        { 'src': /(\u0259)/g, 'dest': '@' },
+        { 'src': /(\u025a)/g, 'dest': '3' },
+        { 'src': /(\u0259\u02d0)/g, 'dest': '3:' },
+        { 'src': /(a\u026a)/g, 'dest': 'aI' },
+        { 'src': /(\u028c\u026a)/g, 'dest': 'aI' },
+        { 'src': /(\u0251e)/g, 'dest': 'aI' },
+        { 'src': /(b)/g, 'dest': 'b' },
+        { 'src': /(t\u0283)/g, 'dest': 'tS' },
+        { 'src': /(\u02a7)/g, 'dest': 'tS' },
+        { 'src': /(d)/g, 'dest': 'd' },
+        { 'src': /(\xf0)/g, 'dest': 'D' },
+        { 'src': /(\u025b)/g, 'dest': 'E' },
+        { 'src': /(e)/g, 'dest': 'E' },
+        { 'src': /(\u025d)/g, 'dest': '3:' },
+        { 'src': /(\u025c\u02d0)/g, 'dest': '3:' },
+        { 'src': /(\u025b\u0259)/g, 'dest': 'e@' },
+        { 'src': /(e)/g, 'dest': 'E' },
+        { 'src': /(\u025d)/g, 'dest': '3:' },
+        { 'src': /(\u025c\u02d0)/g, 'dest': '3:' },
+        { 'src': /(e\u026a)/g, 'dest': 'eI' },
+        { 'src': /(\xe6\u026a)/g, 'dest': 'eI' },
+        { 'src': /(f)/g, 'dest': 'f' },
+        { 'src': /(\u0261)/g, 'dest': 'g' },
+        { 'src': /(g)/g, 'dest': 'g' },
+        { 'src': /(h)/g, 'dest': 'h' },
+        { 'src': /(\u026a)/g, 'dest': 'I' },
+        { 'src': /(\u0268)/g, 'dest': 'I' },
+        { 'src': /(\u026a\u0259)/g, 'dest': 'i@' },
+        { 'src': /(\u026a\u0279)/g, 'dest': 'i@' },
+        { 'src': /(\u026a\u0279\u0259)/g, 'dest': 'i@3' },
+        { 'src': /(i)/g, 'dest': 'i:' },
+        { 'src': /(i\u02d0)/g, 'dest': 'i:' },
+        { 'src': /(d\u0292)/g, 'dest': 'dZ' },
+        { 'src': /(\u02a4)/g, 'dest': 'dZ' },
+        { 'src': /(k)/g, 'dest': 'k' },
+        { 'src': /(x)/g, 'dest': 'x' },
+        { 'src': /(l)/g, 'dest': 'l' },
+        { 'src': /(d\u026b)/g, 'dest': 'l' }, 
+        { 'src': /(m)/g, 'dest': 'm' },
+        { 'src': /(n)/g, 'dest': 'n' },
+        { 'src': /(\u014b)/g, 'dest': 'N' },
+        { 'src': /(\u0259\u028a)/g, 'dest': 'oU' },
+        { 'src': /(o)/g, 'dest': 'oU' },
+        { 'src': /(o\u028a)/g, 'dest': 'oU' },
+        { 'src': /(\u0259\u0289)/g, 'dest': 'V' },
+        { 'src': /(\u0254\u026a)/g, 'dest': 'OI' },
+        { 'src': /(o\u026a)/g, 'dest': 'OI' },
+        { 'src': /(p)/g, 'dest': 'p' },
+        { 'src': /(\u0279)/g, 'dest': 'r' },
+        { 'src': /(s)/g, 'dest': 's' },
+        { 'src': /(\u0283)/g, 'dest': 'S' },
+        { 'src': /(t)/g, 'dest': 't' },
+        { 'src': /(\u027e)/g, 'dest': 't' },
+        { 'src': /(\u03b8)/g, 'dest': 'T' },
+        { 'src': /(\u028a\u0259)/g, 'dest': 'U@' },
+        { 'src': /(\u028a\u0279)/g, 'dest': 'U@' },
+        { 'src': /(\u028a)/g, 'dest': 'U' },
+        { 'src': /(\u0289\u02d0)/g, 'dest': 'u:' },
+        { 'src': /(u\u02d0)/g, 'dest': 'u:' },
+        { 'src': /(u)/g, 'dest': 'u:' },
+        { 'src': /(\u0254\u02d0)/g, 'dest': 'O:' },
+        { 'src': /(o\u02d0)/g, 'dest': 'O:' },
+        { 'src': /(v)/g, 'dest': 'v' },
+        { 'src': /(w)/g, 'dest': 'w' },
+        { 'src': /(\u028d)/g, 'dest': 'w' },
+        { 'src': /(j)/g, 'dest': 'j' },
+        { 'src': /(z)/g, 'dest': 'z' },
+        { 'src': /(\u0292)/g, 'dest': 'Z' },
+        { 'src': /(\u0294)/g, 'dest': '?' },
+    
+        // special edits
+        { 'src': /(k\'a2n)/g, 'dest': 'k\'@n' },
+        { 'src': /(ka2n)/g, 'dest': 'k@n' },
+        { 'src': /(gg)/g, 'dest': 'g' },
+        { 'src': /(@U)/g, 'dest': 'oU' },
+        { 'src': /rr$/g, 'dest': 'r' },
+        { 'src': /3r$/g, 'dest': '3:' },
+        { 'src': /([iU]|([AO]:))@r$/g, 'dest': '$1@' },
+        { 'src': /([^e])@r/g, 'dest': '$1:3' },
+        { 'src': /e@r$/g, 'dest': 'e@' },
+        { 'src': /e@r([bdDfghklmnNprsStTvwjzZ])/g, 'dest': 'e@$1' },
+
+        // edits arising from testing
+        { 'src': /(\'k)+/g, 'dest': 'k\'' },  
+        { 'src': /(\ː)+/g, 'dest': ':' },
+        { 'src': /(\:)+/g, 'dest': ':' },      
+        { 'src': /(ᵻ)/g, 'dest': 'I' },
+        { 'src': /(ɜ)/g, 'dest': '3' },  
+        { 'src': /(ɔ)/g, 'dest': 'O' },  
+
+        // feedback from formantzero via r/linguistics
+        { 'src': /\u0361(.)/g, 'dest': '$1\'' },  
+        { 'src': /3$/g, 'dest': 'R' }
+      ]
+
+      for (var i = 0; i < mappings.length; i++) {
+        uipa = uipa.replace(mappings[i].src, mappings[i].dest)
+      }
+      spoken = meSpeak.speak('[['+uipa+']]', {}, () => playIPAIndex())
+	}
+		
+  // ------- End of Face Cutaway Keyboard (and common functions)
+  // ------- Start of Ascii Keyboard (till the end)
+	
+	let selectedSpeechCodeIPA, selectedSpeechCodePart
+	let speechSelector = document.getElementById("speechSelector")
+
+	for (let [control, states] of Object.entries(speechControls)) {
+		states = Object.entries(states)
+		let options = document.createElement("div")
+		options.id = control
+		for (let i = 0; i < states.length; i++) {
+			let state = states[i]
+			let opt = document.createElement("input")
+			opt.type = 'radio'
+			opt.name = control
+			opt.id = state[0]
+			opt.value = state[0]
+			let stateStyle = ''
+			if (control === 'breath') {
+				stateStyle = 'color: lightseagreen'
+			} else if (control === 'lips') {
+				stateStyle = 'color: red'
+			} else if (control === 'tongue') {
+				stateStyle = 'color: darkviolet'
+			} else if (control === 'throat') {
+				stateStyle = 'color: brown'
+			}
+			stateStyle += '; font-weight: bold'
+			state[1].img = `<span style='${stateStyle}'>${state[1].img}</span>`
+			opt.dataset.img = state[1].img
+			opt.onclick = pronounce
+			let optLabel = document.createElement("label")
+			optLabel.innerHTML = `${state[1].img} ${state[0]}`
+			optLabel.htmlFor = state[0]
+			optLabel.dataset.control = control
+			options.appendChild(opt)
+			options.appendChild(optLabel)
+			options.appendChild(document.createElement("br"))
+		}
+		let sel = document.createElement("div")
+		sel.style.display = 'inline-block'
+		sel.style.verticalAlign = 'top'
+		let selLabel = document.createElement("label")
+		selLabel.id = control
+		selLabel.innerHTML = getOptTitle(control, "")
+		sel.appendChild(selLabel)
+		sel.appendChild(options)
+		speechSelector.appendChild(sel)
+	}
+	
+	function pronounce(e) {
+		if (document.getElementById('addAscii').style.display === 'none')
+			document.getElementById('addAscii').style.display = 'inline'
+		let prevSelectedLabel = document.getElementById('speechSelector').querySelector(`label[for='${selectedSpeechCodePart}']`)
+		if (selectedSpeechCodePart) {
+			prevSelectedLabel.classList.remove('selPart')
+		}
+		let prevSelectedSpeechCodePart = selectedSpeechCodePart
+		let selectedLabel = document.getElementById('speechSelector').querySelector(`label[for='${e.target.id}']`)
+		selectedSpeechCodePart = e.target.id
+		selectedLabel.classList.add('selPart')
+		
+		let states, foundSpeechCodeIdx
+		if (selectedLabel.classList.contains('audioPossible')) {
+			foundSpeechCodeIdx = speechCodesArray.findIndex(speechCode => {
+				states = speechCode.split(':')
+				return states.findIndex(state => state === selectedSpeechCodePart) >= 0 && states.findIndex(state => state === prevSelectedSpeechCodePart) >= 0
+			})
+		} else {
+			foundSpeechCodeIdx = speechCodesArray.findIndex(speechCode => {
+				states = speechCode.split(':')
+				return states.findIndex(state => state === selectedSpeechCodePart) >= 0
+			})
+		}
+		if (foundSpeechCodeIdx >= 0) {
+			document.getElementById('speechSelector').querySelector(`input[type='radio'][id='${states[0]}']`).checked = true
+			document.getElementById('speechSelector').querySelector(`input[type='radio'][id='${states[1]}']`).checked = true
+			document.getElementById('speechSelector').querySelector(`input[type='radio'][id='${states[2]}']`).checked = true
+			document.getElementById('speechSelector').querySelector(`input[type='radio'][id='${states[3]}']`).checked = true	
+		}
+		let code = [], img = "", checked = getChecked()
+		for (let opt of checked) {
+			code.push(opt.value)
+			img += opt.dataset.img
+			document.querySelector(`#${opt.name}`).innerHTML = getOptTitle(opt.name, opt.dataset.img);
+		}
+		code = code.join(':')
+		selectedSpeechCodeIPA = speechCodes[code] ? speechCodes[code].ipa : ''
+		document.getElementById('speechAsciiLetter').innerHTML = `${img} [${selectedSpeechCodeIPA}]`
+		if (speechCodes[code] && ipa[speechCodes[code].ipa] && ipa[speechCodes[code].ipa].audio)
+			playIPA(speechCodes[code].ipa)
+		highlightAudioChoices()
+	}
+	
+	function highlightAudioChoices() {
+		let selected = getChecked()
+		let selectedValues = [null, null, null, null], selectedControls = []
+		for (let opt of getChecked()) {
+			let i = 0 // breath
+			if (opt.name === 'lips') {
+				i = 1
+			} else if (opt.name === 'tongue') {
+				i = 2
+			} else if (opt.name === 'throat') {
+				i = 3
+			}
+			selectedValues[i] = opt.value
+			selectedControls.push(opt.name)
+		}
+		let highlighted = []
+		removeSpeechSelectorClass('audio')
+		removeSpeechSelectorClass('audioPossible')
+		let audioPossibleMatches = {}
+		speechCodesArray.forEach(speechCode => {
+			if (speechCode.match(`\\b${selectedSpeechCodePart}\\b`)) {
+				let highlightedSpeechCode = speechCode.split(':')
+				for (let i = 0; i < highlightedSpeechCode.length; i++) {
+					if (!audioPossibleMatches[highlightedSpeechCode[i]]) {
+						document.getElementById('speechSelector').querySelector(`label[for='${highlightedSpeechCode[i]}']`).classList.add('audioPossible')
+						audioPossibleMatches[highlightedSpeechCode[i]] = true
+					}
+				}
+			}
+		})
+		for (let i = 0; i < selectedControls.length; i++) {
+			let selectedControl = selectedControls[i]
+			let controlOptions = document.getElementById('speechSelector').querySelectorAll(`label[data-control='${selectedControl}']`)
+			let highlightCode = JSON.parse(JSON.stringify(selectedValues))
+			for (let opt of controlOptions) {
+				highlightCode[i] = opt.htmlFor
+				let code = highlightCode.join(':')
+				if (speechCodes[code] && ipa[speechCodes[code].ipa] && ipa[speechCodes[code].ipa].audio)
+					opt.classList.add('audio')
+			}
+		}
+	}
+	
+	function getChecked() {
+		return document.getElementById('speechSelector').querySelectorAll(`input[type='radio']:checked`)
+	}
+	
+	function getOptTitle(control, option) {
+			return `${control}: ${option}`
+	}
+</script>
+</body>
+</html>
