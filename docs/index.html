@@ -77,31 +77,43 @@
 	<!-- A universal language script based on the anatomy of speech. Symbols directly correspond to IPA characters.
 	
 	Uses:
-	- represent any language sound accurately, unlike a transliteration
-	- good for young kids to learn language sounds without the additional burden of memorizing abstract scripts
-	- help the deaf, blind and people with speech disorders to learn how to pronounce naturally
-	- learn new languages quickly by mapping unfamiliar scripts to it's anatomical mapping
-	- help speakers of non-phonetic languages, eg, English and Chinese, pronounce new words
-	- avoid confusion for multi-lingual language learners for languages that share the same script but assign different sounds to letters, eg, 'A' in Dutch and English have different sounds.
+	- visualize any language sound accurately, unlike a transliteration
+	- helps young kids learn language sounds without the additional burden of memorizing abstract scripts
+	- helps the deaf, blind and speech impaired to learn how to pronounce naturally
+	- learn new languages quickly by connecting unfamiliar scripts to their visual vocalizations
+	- helps speakers of non-phonetic languages, eg, English and Chinese, pronounce new words
+	- avoid confusion between languages that share the same script but assign different sounds, eg, 'A' in Dutch and English have different sounds.
 
 	https://www.youtube.com/channel/UCFuOFZ0wFoHK2deKFldaLGA<br><br>
 -->
 <svg id="imageAlphabet" style="display: none" width="100" height="400" viewBox="100 100 1000 1000"></svg>
 <div>
-	<button onclick="updateIPAText(' ')">⌴ ➕</button>
-	<span>
-		<button onclick="playIPA(speechIPASeq)">▶️</button>
-		<button onclick="updateIPAText(null)">❌</button>
-		 <span id="imgLetterSeq"></span>
-		 <span id="langLetterSeq"></span>
-		 /<span id="ipaLetterSeq"></span>/
-	</span>
-	<span id="speechPlayer" style="position: absolute; top: .5%; left: 45%; display: none">
+	<div id="selectLetter" class="dropdown">
+	  <button class="dropbtn">Select Vocal (Dutch and IPA) ▼</button>
+	  <div class="dropdown-content"></div>
+	</div>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<span id="speechPlayer" style="display: none">
 		<button onclick="updateIPAText(selectedImgSpeechCodeIPA)">➕</button>
 		<button onclick="playIPA(selectedImgSpeechCodeIPA)">▶️</button>
 		<span id="addLetter"></span>
 	</span>
-
+	<span style="position: absolute; left: 40%; top: 0">
+		<button onclick="playIPA(speechIPASeq)">▶️</button>
+		<button onclick="updateIPAText(' ')">⌴ ➕</button>
+		<button onclick="updateIPAText(null)">❌</button>
+		 <span id="imgLetterSeq"></span>
+		 <span id="langLetterSeq"></span>
+		 <span id="ipaLetterSeq"></span>
+		 &nbsp;&nbsp;&nbsp;
+		 <a href="https://www.facebook.com/sharer/sharer.php?u=https://ajc5.github.io/visual-vocals/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/20px-F_icon.svg.png" /></a>
+		 <a href="https://twitter.com/home?status=https://ajc5.github.io/visual-vocals/ "><img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/25px-Twitter_bird_logo_2012.svg.png" /></a>
+		 <a href="https://pinterest.com/pin/create/button/?url=https://ajc5.github.io/visual-vocals/&media=&description="><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Pinterest.svg/22px-Pinterest.svg.png" /></a>
+		 <a href="mailto:info@example.com?&subject=&body=https://ajc5.github.io/visual-vocals/ "><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Email_%2889509%29_-_The_Noun_Project.svg/25px-Email_%2889509%29_-_The_Noun_Project.svg.png" /></a>
+	</span>
+	<div style="float: right">
+		&nbsp;<a href="https://github.com/ajc5/visual-vocals" target="blank"><img alt="Visual Vocals on Github" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/25px-Octicons-mark-github.svg.png"/></a>
+	</div>
  	<div style="float: right">
  		<select onchange="selectKeyboard(event)">
  			<option value="imageSpeechPane">Speech Face</option>
@@ -118,11 +130,6 @@
  			<option value="asciiSpeechPane">ASCII Code</option>
  		</select>
  	</div>
-	<div style="float: right">&nbsp;&nbsp;</div>
-	<div id="selectLetter" class="dropdown" style="float: right">
-	  <button class="dropbtn">Select Vocal (Dutch and IPA) ▼</button>
-	  <div class="dropdown-content"></div>
-	</div>
 	<br><br>
 	
 </div>
@@ -403,7 +410,7 @@
 		else if (addIPAText)
 			speechIPASeq += addIPAText
 		let langText = "", imgLetters = "", ipaChars = speechIPASeq.split('')
-		document.getElementById('ipaLetterSeq').innerHTML = speechIPASeq
+		document.getElementById('ipaLetterSeq').innerHTML = `/${speechIPASeq}/`
 		
 		for (let i = 0; i < ipaChars.length; i++) {
 			let oneChar = ipaChars[i],
