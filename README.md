@@ -1,6 +1,6 @@
 # visual-vocals
 
-![batty](visual-vocals.png)
+[![batty](visual-vocals.png)](http://ajc5.github.io/visual-vocals)
 
 Try it at http://ajc5.github.io/visual-vocals
 
