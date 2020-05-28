@@ -99,13 +99,15 @@
 		<span id="addLetter"></span>
 	</span>
 	<span style="position: absolute; left: 40%; top: 0">
-		<button onclick="playIPA(speechIPASeq)">▶️</button>
-		<button onclick="updateIPAText(' ')">⌴ ➕</button>
-		<button onclick="updateIPAText(null)">❌</button>
-		 <span id="imgLetterSeq"></span>
-		 <span id="langLetterSeq"></span>
-		 <span id="ipaLetterSeq"></span>
-		 &nbsp;&nbsp;&nbsp;
+		<span id="sentencePlayer" style="display: none">
+			<button onclick="playIPA(speechIPASeq)">▶️</button>
+			<span id="imgLetterSeq"></span>
+			<span id="langLetterSeq"></span>
+			<span id="ipaLetterSeq"></span>
+			<button onclick="updateIPAText(' ')">⌴ ➕</button>
+			<button onclick="updateIPAText(null)">❌</button>
+			 &nbsp;&nbsp;&nbsp;
+	 	</span>
 		 <a href="https://www.facebook.com/sharer/sharer.php?u=https://ajc5.github.io/visual-vocals/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/20px-F_icon.svg.png" /></a>
 		 <a href="https://twitter.com/home?status=https://ajc5.github.io/visual-vocals/ "><img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/25px-Twitter_bird_logo_2012.svg.png" /></a>
 		 <a href="https://pinterest.com/pin/create/button/?url=https://ajc5.github.io/visual-vocals/&media=&description="><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Pinterest.svg/22px-Pinterest.svg.png" /></a>
@@ -410,8 +412,6 @@
 		else if (addIPAText)
 			speechIPASeq += addIPAText
 		let langText = "", imgLetters = "", ipaChars = speechIPASeq.split('')
-		document.getElementById('ipaLetterSeq').innerHTML = speechIPASeq !== '' ? `/${speechIPASeq}/` : ''
-		
 		for (let i = 0; i < ipaChars.length; i++) {
 			let oneChar = ipaChars[i],
 				twoChars = oneChar + ipaChars[i + 1],
@@ -441,8 +441,11 @@
 				}
 			}
 		}
+		document.getElementById("sentencePlayer").style.display = speechIPASeq === '' ? 'none' : 'inline'
 		document.getElementById('imgLetterSeq').innerHTML = imgLetters
 		document.getElementById('langLetterSeq').innerHTML = langText
+		document.getElementById('ipaLetterSeq').innerHTML = speechIPASeq !== '' ? `/${speechIPASeq}/` : ''
+		
 		if (!skipHistory)
 			history.pushState('', '', speechIPASeq === '' ? new URL(location).href.split('?')[0] : `?ipa=${speechIPASeq}`)
 			
