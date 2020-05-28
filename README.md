@@ -2,7 +2,7 @@
 
 [![batty](visual-vocals.png)](http://ajc5.github.io/visual-vocals)
 
-Try it at http://ajc5.github.io/visual-vocals
+Try it at http://ajc5.github.io/visual-vocals!
 
 Visual Vocals is an interactive visualization for demonstrating the anatomy of speech. It follows the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) and it's designed to be used as a universal language script.
 
