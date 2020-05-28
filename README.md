@@ -1,2 +1,2 @@
 # visual-vocals
-Interactive visualization demonstrating the anatomy of speech. Follows the IPA and is the basis for a universal language script.
+Interactive visualization demonstrating the anatomy of speech. Follows the IPA and designed to be used as a universal language script.
