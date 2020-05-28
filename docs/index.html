@@ -399,9 +399,9 @@
 	}
 	
 	// addIPAText
-	// null - delete all text
-	// ' ' (space) - add word separator
-	// undefined - do nothing
+	// - null - clear text
+	// - ' ' (space) - add word separator
+	// - undefined - do nothing
 	function updateIPAText(addIPAText, skipHistory) {
 		if (addIPAText === undefined) 
 			return
@@ -410,7 +410,7 @@
 		else if (addIPAText)
 			speechIPASeq += addIPAText
 		let langText = "", imgLetters = "", ipaChars = speechIPASeq.split('')
-		document.getElementById('ipaLetterSeq').innerHTML = `/${speechIPASeq}/`
+		document.getElementById('ipaLetterSeq').innerHTML = speechIPASeq !== '' ? `/${speechIPASeq}/` : ''
 		
 		for (let i = 0; i < ipaChars.length; i++) {
 			let oneChar = ipaChars[i],
