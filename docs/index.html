@@ -108,10 +108,10 @@
 			<button onclick="updateIPAText(null)">❌</button>
 			 &nbsp;&nbsp;&nbsp;
 	 	</span>
-		 <a href="https://www.facebook.com/sharer/sharer.php?u=https://ajc5.github.io/visual-vocals/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/20px-F_icon.svg.png" /></a>
-		 <a href="https://twitter.com/home?status=https://ajc5.github.io/visual-vocals/ "><img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/25px-Twitter_bird_logo_2012.svg.png" /></a>
-		 <a href="https://pinterest.com/pin/create/button/?url=https://ajc5.github.io/visual-vocals/&media=&description="><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Pinterest.svg/22px-Pinterest.svg.png" /></a>
-		 <a href="mailto:info@example.com?&subject=&body=https://ajc5.github.io/visual-vocals/ "><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Email_%2889509%29_-_The_Noun_Project.svg/25px-Email_%2889509%29_-_The_Noun_Project.svg.png" /></a>
+		<!-- AddToAny BEGIN -->
+		<a class="a2a_dd" href="https://www.addtoany.com/share"><img src="https://static.addtoany.com/buttons/share_save_171_16.png" width="171" height="16" border="0" alt="Share"></a>
+		<script async src="https://static.addtoany.com/menu/page.js"></script>
+		<!-- AddToAny END -->
 	</span>
 	<div style="float: right">
 		&nbsp;<a href="https://github.com/ajc5/visual-vocals" target="blank"><img alt="Visual Vocals on Github" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/25px-Octicons-mark-github.svg.png"/></a>
@@ -701,7 +701,7 @@
 	
 	function selectKeyboard(e) {
 		if (e.target.value === "more") {
-			alert('We are looking for contributors. Interested? Please follow the instructions on the project homepage for submitting your contributions. Thanks.')
+			alert('We are looking for contributors. Interested? Please submit your work via a pull request at https://github.com/ajc5/visual-vocals. Thanks.')
 			e.target.value = currentKeyboard
 		}
 		currentKeyboard = e.target.value
