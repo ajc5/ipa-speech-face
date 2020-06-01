@@ -4,7 +4,7 @@
 
 Try it at http://ajc5.github.io/visual-vocals!
 
-Visual Vocals is an interactive visualization for demonstrating the anatomy of speech. It follows the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) and it is intended to be used as a universal language script.
+Visual Vocals is interactively visualizes the anatomy of speech. It follows the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) and it is intended to be used as a universal language script.
 
 Uses:
 - pronounce language sounds by viewing speech organ positions rather than reading transliterated approximations
