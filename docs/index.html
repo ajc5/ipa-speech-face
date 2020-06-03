@@ -109,7 +109,7 @@
 	</div>
  	<div style="float: right">
  		<select onchange="selectLanguage(event)">
-	 		<option value="ipa">🗣️ Sounds</option>
+	 		<option value="ipa">🗣️ All Sounds</option>
  			<option value="en">🇬🇧 English</option>
  			<option value="nl">🇳🇱 Dutch</option>
 			<option value="more">more...</option>
@@ -429,14 +429,14 @@
 					chars = twoChars
 					i++
 				}
-				imgLetters += getIPALetterImage(chars)
+				imgLetters += getVisualScript(chars)
 				langText += getDisplayLetter(chars)
 			} else {
 				if (oneChar === ' ') {
 					imgLetters += '&nbsp;'
 					langText += '&nbsp;'
 				} else {
-					imgLetters += getIPALetterImage(oneChar)
+					imgLetters += getVisualScript(oneChar)
 					langText += getDisplayLetter(oneChar)
 				}
 			}
@@ -503,7 +503,7 @@
 	if (langTxt !== ipaLetter && showIPA)
 		dispLetter += ` /${ipaLetter}/`
 	if (showIPA && showIPAImage)
-		dispLetter = ` ${getIPALetterImage(ipaLetter)} ${dispLetter}`
+		dispLetter = ` ${getVisualScript(ipaLetter)} ${dispLetter}`
 	return dispLetter
   }
   
@@ -639,6 +639,19 @@
   function getIPALetterImage(ipaLetter) {
   	return ipa[ipaLetter] && ipa[ipaLetter].speechCode ? getSpeechCodeImg(ipa[ipaLetter].speechCode) : (ipaLetter == undefined || ipaLetter.trim() === '' ? '' : '🤔')
   }
+  
+	function getVisualScript(ipaTxt) {
+		let visualScriptTxt = ""
+		if (ipa[ipaTxt] && ipa[ipaTxt].speechCode) {
+			visualScriptTxt = getSpeechCodeImg(ipa[ipaTxt].speechCode)
+		} else {
+			for (let ipaChar of ipaTxt.split('')) {
+				if (ipa[ipaChar] && ipa[ipaChar].speechCode)
+					visualScriptTxt += getSpeechCodeImg(ipa[ipaChar].speechCode)
+			}
+		}
+		return visualScriptTxt
+	}
   
   function getSpeechCodeImg(code, showAscii) {
 	  if (showAscii) {
@@ -782,20 +795,7 @@
 			dataGrid.push([lang === "ipa" ? word.replace(/:/gi, ', ').replace(/_/gi, '-') : word, translitText, getVisualScript(langs.ipa), langs.ipa])
 		}
 	}
- 	
-	function getVisualScript(ipaTxt) {
-		let visualScriptTxt = ""
-		if (ipa[ipaTxt] && ipa[ipaTxt].speechCode) {
-			visualScriptTxt = getSpeechCodeImg(ipa[ipaTxt].speechCode)
-		} else {
-			for (let ipaChar of ipaTxt.split('')) {
-				if (ipa[ipaChar] && ipa[ipaChar].speechCode)
-					visualScriptTxt += getSpeechCodeImg(ipa[ipaChar].speechCode)
-			}
-		}
-		return visualScriptTxt
-	}
-	
+
 	function generateSpeechTable(dataGrid) {
 		let table = document.getElementById("speechKeyboard")
 		table.querySelectorAll('tr').forEach(tr => tr.parentNode.removeChild(tr))
