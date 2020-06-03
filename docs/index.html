@@ -7,6 +7,9 @@
 		  font-family: arial, sans-serif;
 		  font-size: larger;
 	  }
+	  button {
+		  cursor: pointer;
+	  }
 	  .audio {
 		  border: solid pink 4px;
 	  }
@@ -20,6 +23,10 @@
 	  }
 	  .mover {
 		  opacity: .1;
+		  cursor: pointer;
+	  }
+	  .mover:hover {
+		  stroke: slateblue;
 	  }
 	  .lips {
 		stroke-width: 10;
@@ -44,7 +51,7 @@
 		marker-start: url(#arrow);
 	  }
 	  .dropbtn {
-		font-size: large;
+		font-size: medium;
 	  }
 	  .dropdown {
 	    position: relative;
@@ -74,68 +81,59 @@
 	</script>
 </head>
 <body>
-	<!-- A universal language script based on the anatomy of speech. Symbols directly correspond to IPA characters.
-	
-	Uses:
-	- visualize any language sound accurately, unlike a transliteration
-	- helps young kids learn language sounds without the additional burden of memorizing abstract scripts
-	- helps the deaf, blind and speech impaired to learn how to pronounce naturally
-	- learn new languages quickly by connecting unfamiliar scripts to their visual vocalizations
-	- helps speakers of non-phonetic languages, eg, English and Chinese, pronounce new words
-	- avoid confusion between languages that share the same script but assign different sounds, eg, 'A' in Dutch and English have different sounds.
-
-	https://www.youtube.com/channel/UCFuOFZ0wFoHK2deKFldaLGA<br><br>
--->
+	<!-- https://www.youtube.com/channel/UCFuOFZ0wFoHK2deKFldaLGA -->
 <svg id="imageAlphabet" style="display: none" width="100" height="400" viewBox="100 100 1000 1000"></svg>
 <div>
-	<div id="selectLetter" class="dropdown">
-	  <button class="dropbtn">Select Vocal (Dutch and IPA) ▼</button>
-	  <div class="dropdown-content"></div>
-	</div>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<span id="speechPlayer" style="display: none">
-		<button onclick="updateIPAText(selectedImgSpeechCodeIPA)">➕</button>
-		<button onclick="playIPA(selectedImgSpeechCodeIPA)">▶️</button>
-		<span id="addLetter"></span>
+		<button onclick="addIPAText(selectedFaceIPA)">➕</button>
+		<button onclick="playIPA(selectedFaceIPA)">▶️</button>
 	</span>
-	<span style="position: absolute; left: 40%; top: 0">
-		<span id="sentencePlayer" style="display: none">
-			<button onclick="playIPA(speechIPASeq)">▶️</button>
-			<span id="imgLetterSeq"></span>
-			<span id="langLetterSeq"></span>
-			<span id="ipaLetterSeq"></span>
-			<button onclick="updateIPAText(' ')">⌴ ➕</button>
-			<button onclick="updateIPAText(null)">❌</button>
-			 &nbsp;&nbsp;&nbsp;
-	 	</span>
-		<!-- AddToAny BEGIN -->
-		<a class="a2a_dd" href="https://www.addtoany.com/share"><img src="https://static.addtoany.com/buttons/share_save_171_16.png" width="171" height="16" border="0" alt="Share"></a>
-		<script async src="https://static.addtoany.com/menu/page.js"></script>
-		<!-- AddToAny END -->
-	</span>
+	<div id="selectLetter" class="dropdown">
+		<span id="addLetter">🗣️</span>
+	  	<button class="dropbtn">▼</button>
+	  	<div class="dropdown-content"></div>
+	</div>
 	<div style="float: right">
-		&nbsp;<a href="https://github.com/ajc5/visual-vocals" target="blank"><img alt="Visual Vocals on Github" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/25px-Octicons-mark-github.svg.png"/></a>
+		&nbsp;<a href="https://github.com/ajc5/visual-speech-keyboard" target="blank"><img alt="Visual Speech Keyboard on Github" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/25px-Octicons-mark-github.svg.png"/></a>
 	</div>
  	<div style="float: right">
  		<select onchange="selectKeyboard(event)">
- 			<option value="imageSpeechPane">Speech Face</option>
-			<optgroup label="Vocals">
-	 			<option value="ipa">IPA</option>
-	 			<option value="graphemes">Dutch Graphemes</option>
-				<option value="more">More...</option>
-			</optgroup>
-			<optgroup label="Alphabet">
-	 			<option value="en">English Alphabet</option>
-	 			<option value="nl">Dutch Alphabet</option>
-				<option value="more">More...</option>
-			</optgroup>
- 			<option value="asciiSpeechPane">ASCII Code</option>
+ 			<option value="facePane">Face</option>
+ 			<option value="alphabet">Alphabet</option>
+ 			<option value="graphemes">Graphemes</option>
+ 			<!--option value="asciiPane">ASCII</option-->
  		</select>
  	</div>
+	<div style="float: right">
+		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Keyboard-icon_Wikipedians.svg/40px-Keyboard-icon_Wikipedians.svg.png" />
+	</div>
+ 	<div style="float: right">
+ 		<select onchange="selectLanguage(event)">
+	 		<option value="ipa">🗣️ Sounds</option>
+ 			<option value="en">🇬🇧 English</option>
+ 			<option value="nl">🇳🇱 Dutch</option>
+			<option value="more">more...</option>
+ 		</select>
+ 	</div>
+	<span style="float: right">
+		<span id="sentencePlayer" style="display: none">
+			<button onclick="playIPA(ipaSentence)">▶️</button>
+			<span id="imgLetterSeq"></span>
+			<span id="langLetterSeq"></span>
+			<span id="ipaLetterSeq"></span>
+			<button onclick="addIPAText(' ')">⌴ ➕</button>
+			<button onclick="addIPAText(null)">❌</button>
+			 &nbsp;&nbsp;&nbsp;
+	 	</span>
+		<!-- AddToAny BEGIN -->
+		<a class="a2a_dd" href="https://www.addtoany.com/share"><img src="https://static.addtoany.com/buttons/share_save_171_16.png" width="200" height="20" alt="Share"></a>
+		<script async src="https://static.addtoany.com/menu/page.js"></script>
+		<!-- AddToAny END -->
+		&nbsp;&nbsp;&nbsp;
+	</span>
 	<br><br>
-	
 </div>
-<div id="imageSpeechPane" class="keyboard">
+<div id="facePane" class="keyboard">
 
 	<svg>
 		<defs>
@@ -258,7 +256,7 @@
 			<g id="throatImg" transform="translate(720,360) scale(.6)">
 			  <defs>
 				<circle id="throatUnvoiced" cx="50" cy="50" r="70" />
-				<path id="throatVoiced" transform="translate(-40,-100) scale(.9,.5)" d="M 100 400 Q 150 350 100 300 Q 50 250 100 200 " />
+				<path id="throatVoiced" transform="translate(-40,200) scale(.9,-.5)" d="M 100 400 Q 150 350 100 300 Q 50 250 100 200 " />
 			  </defs>
 			  <use href="#throatUnvoiced" class="unvoiced throat mover"/>
 			  <use href="#throatVoiced" class="voiced throat mover"/>
@@ -312,22 +310,22 @@
 	</svg>
 </div>
 
-<div id="asciiSpeechPane" class="keyboard" style="display: none">
+<div id="asciiPane" class="keyboard" style="display: none">
 	<div id="addAscii" style="display: none">
-		<button onclick="updateIPAText(selectedSpeechCodeIPA)">➕</button>
+		<button onclick="addIPAText(selectedSpeechCodeIPA)">➕</button>
 		<button onclick="playIPA(selectedSpeechCodeIPA)">▶️</button>
 		<span id="speechAsciiLetter" style="font-size: 2em"></span>
 	</div>
 	<div id="speechSelector"></div>
 </div>
 
-<div id="speechKeyboardPane" class="keyboard" style="display: none">
+<div id="tablePane" class="keyboard" style="display: none">
 	<table id="speechKeyboard" border="1px solid black"></table>
 </div>
 <script src="common/ipa.js"></script>
 <script>
 
-// ------------ Face Cutaway Keyboard ------------------------
+// ------------ Face Keyboard ------------------------
 
 	let isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/)
 	let iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
@@ -335,13 +333,15 @@
 	let wordLists = {
 		"en":  "English",
 		"nl": "Dutch",
-		"ipa": "Vocal Type",
+		"ipa": "Articulation (breath, lips, tongue, vocal cords)",
 		"graphemes": "Grapheme"
 	}
-    let speechIPASeq = "",
-		selectedImgSpeechCodeIPA,
-		selectedImgSpeechCodePart = [], 
-		prevSelectedImgSpeechCodePart, 
+    let ipaSentence = "",
+		selectedFaceIPA,
+		selectedFaceSpeechCodePart = [], 
+		prevSelectedFaceSpeechCodePart,
+		selectedKeyboardOption = "facePane",
+		selectedLanguage = "ipa",
 		locUrl = new URL(location), 
 		ipaText = locUrl.searchParams.get('ipa'),
 		speechCodeChoices = {},
@@ -349,11 +349,11 @@
 		bigBreathElem
 	
     if (ipaText) {
-		updateIPAText(ipaText, true)
+		addIPAText(ipaText, true)
     }
 	onpopstate = e => {
-		speechIPASeq = ""
-		updateIPAText(new URL(location).searchParams.get('ipa'), true)
+		ipaSentence = ""
+		addIPAText(new URL(location).searchParams.get('ipa'), true)
 	}
 	document.getElementById("imageSpeechPic").addEventListener("click", findAndPronounce)
 
@@ -384,34 +384,34 @@
 		imageAlphabet.appendChild(imageLetter)
 	})
 	clearSelectedElems()
-	addLettersToSelect()
+	generateSoundSelector()
 	
-	function addLettersToSelect() {
-		let select = document.querySelector('#selectLetter .dropdown-content')
+	function generateSoundSelector() {
+		let dropdown = document.querySelector('#selectLetter .dropdown-content')
+		dropdown.innerHTML = ""
 		let dgrid = []
 		addLetters(dgrid, "ipa")
 		dgrid.forEach(row => {
-			let opt = document.createElement('div')
-			opt.classList.add('option')
-			opt.value = row[row.length - 1] // ipa letter
-			opt.innerHTML = getDisplayLetter(opt.value, true, true)
-			opt.addEventListener("click", e => playSpeechCode(ipa[e.target.value].speechCode))
-			select.appendChild(opt)
+			let item = document.createElement('div')
+			item.classList.add('option')
+			item.value = row[row.length - 1] // ipa letter
+			item.innerHTML = getDisplayLetter(item.value, true, true)
+			item.addEventListener("click", e => playSpeechCode(ipa[e.target.value].speechCode))
+			dropdown.appendChild(item)
 		})
 	}
 	
 	// addIPAText
+	// special conditions:
 	// - null - clear text
-	// - ' ' (space) - add word separator
-	// - undefined - do nothing
-	function updateIPAText(addIPAText, skipHistory) {
-		if (addIPAText === undefined) 
-			return
-		else if (addIPAText === null) 
-			speechIPASeq = ""
+	// - undefined - regenerate ipa setence
+	// - ' '+ (spaces) - add &nbsp;
+	function addIPAText(addIPAText, skipHistory) {
+		if (addIPAText === null) 
+			ipaSentence = ""
 		else if (addIPAText)
-			speechIPASeq += addIPAText
-		let langText = "", imgLetters = "", ipaChars = speechIPASeq.split('')
+			ipaSentence += addIPAText
+		let langText = "", imgLetters = "", ipaChars = ipaSentence.split('')
 		for (let i = 0; i < ipaChars.length; i++) {
 			let oneChar = ipaChars[i],
 				twoChars = oneChar + ipaChars[i + 1],
@@ -441,13 +441,13 @@
 				}
 			}
 		}
-		document.getElementById("sentencePlayer").style.display = speechIPASeq === '' ? 'none' : 'inline'
+		document.getElementById("sentencePlayer").style.display = ipaSentence === '' ? 'none' : 'inline'
 		document.getElementById('imgLetterSeq').innerHTML = imgLetters
 		document.getElementById('langLetterSeq').innerHTML = langText
-		document.getElementById('ipaLetterSeq').innerHTML = speechIPASeq !== '' ? `/${speechIPASeq}/` : ''
+		document.getElementById('ipaLetterSeq').innerHTML = ipaSentence !== '' ? `/${ipaSentence}/` : ''
 		
 		if (!skipHistory)
-			history.pushState('', '', speechIPASeq === '' ? new URL(location).href.split('?')[0] : `?ipa=${speechIPASeq}`)
+			history.pushState('', '', ipaSentence === '' ? new URL(location).href.split('?')[0] : `?ipa=${ipaSentence}`)
 			
 	}
 	
@@ -457,9 +457,9 @@
 			elem = bigBreathElem
 	    if (elem.classList.contains('mover')) {
 		    let [control, controlValue] = selectControlValueByElem(elem)
-			if (selectedImgSpeechCodePart[0] !== control)
-				prevSelectedImgSpeechCodePart = selectedImgSpeechCodePart
-			selectedImgSpeechCodePart = [control, controlValue]
+			if (selectedFaceSpeechCodePart[0] !== control)
+				prevSelectedFaceSpeechCodePart = selectedFaceSpeechCodePart
+			selectedFaceSpeechCodePart = [control, controlValue]
 			if (!speechCodeChoices[controlValue]) {
 				speechCodeChoices[controlValue] = speechCodesArray.filter(c => c.match(`\\b${controlValue}\\b`))
 			}
@@ -475,21 +475,31 @@
   
   function playSpeechCode(speechCode) {
 		selectElemsBySpeechCode(speechCode)
-		selectedImgSpeechCodeIPA = speechCodes[speechCode].ipa
+		selectedFaceIPA = speechCodes[speechCode].ipa
 		if (document.getElementById("speechPlayer").style.display === 'none') {
 			document.getElementById("speechPlayer").style.display = 'inline'
 			document.getElementById("selectLetter").style.display = 'inline'
 			document.getElementById("displayImageLetter").href.baseVal = '#imageSpeech'
 		}
-		document.getElementById("addLetter").innerHTML = getDisplayLetter(selectedImgSpeechCodeIPA, true, true)
-		document.getElementById("displayLetter").innerHTML = getDisplayLetter(selectedImgSpeechCodeIPA, true)
-		playIPA(selectedImgSpeechCodeIPA)
+		setDisplayLetter(selectedFaceIPA)
+		playIPA(selectedFaceIPA)
+  }
+  
+  function setDisplayLetter(ipaLetter) {
+		document.getElementById("addLetter").innerHTML = getDisplayLetter(ipaLetter, true, true)
+		document.getElementById("displayLetter").innerHTML = getDisplayLetter(ipaLetter, true)
   }
   
   function getDisplayLetter(ipaLetter, showIPA, showIPAImage) {
-	let langTxt = ipa[ipaLetter] && ipa[ipaLetter].langs && ipa[ipaLetter].langs.nl && ipa[ipaLetter].langs.nl.graphemes ? ipa[ipaLetter].langs.nl.graphemes.toString() : '?'
-	let dispLetter = ""
-	dispLetter = langTxt === ipaLetter ? ipaLetter : langTxt
+	let langTxt
+	if (selectedLanguage === 'ipa') {
+		langTxt = ""
+	} else if (ipa[ipaLetter] && ipa[ipaLetter].langs && ipa[ipaLetter].langs[selectedLanguage] && ipa[ipaLetter].langs[selectedLanguage].graphemes) {
+		langTxt = ipa[ipaLetter].langs[selectedLanguage].graphemes.toString()
+	} else {
+		langTxt = '?'	
+	} 
+	let dispLetter = langTxt === ipaLetter ? ipaLetter : langTxt
 	if (langTxt !== ipaLetter && showIPA)
 		dispLetter += ` /${ipaLetter}/`
 	if (showIPA && showIPAImage)
@@ -696,42 +706,59 @@
 		}
 		return true
 	}
+		 
+	function selectLanguage(e) {
+		if (e.target.value === "more") {
+			alert('We are looking for contributors. Interested? Please submit your work via a pull request at https://github.com/ajc5/visual-speech-keyboard. Thanks.')
+			e.target.value = selectedLanguage
+		}
+		selectedLanguage = e.target.value
+		setLanguageInUI(getSelectedKeyboardId())
+	}
 	
-	let currentKeyboard = "imageSpeechPane"
+	function getSelectedKeyboardId() {
+		return selectedKeyboardOption === "facePane" || selectedKeyboardOption === "asciiPane" ? selectedKeyboardOption : "tablePane"
+	}
 	
 	function selectKeyboard(e) {
-		if (e.target.value === "more") {
-			alert('We are looking for contributors. Interested? Please submit your work via a pull request at https://github.com/ajc5/visual-vocals. Thanks.')
-			e.target.value = currentKeyboard
-		}
-		currentKeyboard = e.target.value
-		let selKeyboardId = e.target.value === "imageSpeechPane" || e.target.value === "asciiSpeechPane" ? e.target.value : "speechKeyboardPane"
+		selectedKeyboardOption = e.target.value
+		let selKeyboardId = getSelectedKeyboardId()
 		document.querySelectorAll('.keyboard').forEach(kb => kb.style.display = kb.id === selKeyboardId ? 'block' : 'none')
-		if (selKeyboardId === "imageSpeechPane") {
-			if (document.getElementById("addLetter").innerHTML !== '')
+		if (selKeyboardId === "facePane") {
+			if (document.getElementById("addLetter").innerHTML !== '🗣️')
 				document.getElementById('speechPlayer').style.display = 'inline'
 			document.getElementById("selectLetter").style.display = 'inline'
 		} else {
 			document.getElementById('speechPlayer').style.display = 'none'
 			document.getElementById("selectLetter").style.display = 'none'
 		}
-			
-		if (selKeyboardId === "speechKeyboardPane") {
-			let dataGrid = []
-			let lang = e.target.value
-			if (lang === 'graphemes') {
-				dataGrid.push(['Dutch', 'Visual Vocal/IPA', 'IPA'])
-				Object.entries(graphemes.nl).forEach(([grapheme, ipas]) => {
-					ipas.forEach(ipa => {
-						dataGrid.push([grapheme, getVisualScript(ipa), ipa])
-					})
-				})
-			} else {
-				dataGrid.push([wordLists[lang], wordLists[getTransliterationLang(lang)], 'Visual Vocal/IPA', 'IPA'])
-				addLetters(dataGrid, lang)
-			}
-			generateSpeechTable(dataGrid, lang)
+		setLanguageInUI(selKeyboardId)
+	}
+	
+	function setLanguageInUI(selKeyboardId) {
+		if (selKeyboardId === "tablePane") {
+			generateDataAndSpeechTable()
 		}
+		generateSoundSelector()
+		addIPAText()
+		if (selectedFaceIPA)
+			setDisplayLetter(selectedFaceIPA)
+	}
+	
+	function generateDataAndSpeechTable() {
+		let dataGrid = []
+		if (selectedKeyboardOption === 'graphemes' && selectedLanguage !== 'ipa') {
+			dataGrid.push([wordLists[selectedLanguage], 'Visual Speech', 'IPA'])
+			Object.entries(graphemes[selectedLanguage]).forEach(([grapheme, ipas]) => {
+				ipas.forEach(ipa => {
+					dataGrid.push([grapheme, getVisualScript(ipa), ipa])
+				})
+			})
+		} else { // selectedKeyboardOption === 'alphabet'
+			dataGrid.push([wordLists[selectedLanguage], wordLists[getTransliterationLang(selectedLanguage)], 'Visual Speech', 'IPA'])
+			addLetters(dataGrid, selectedLanguage)
+		}
+		generateSpeechTable(dataGrid, selectedLanguage)
 	}
 	
 	function getTransliterationLang(lang) {
@@ -779,7 +806,7 @@
 			tr.appendChild(tdIdx)
 			let tdBtns = document.createElement('td')
 			let ipa = dataRow[dataRow.length - 1]
-			tdBtns.innerHTML = i === 0 ? '' : `<button  onclick="updateIPAText('${ipa}')">➕</button> <button onclick='playIPA("${ipa}")'>▶️</button> `
+			tdBtns.innerHTML = i === 0 ? '' : `<button  onclick="addIPAText('${ipa}')">➕</button> <button onclick='playIPA("${ipa}")'>▶️</button> `
 			tr.appendChild(tdBtns)
 			dataRow.forEach(dataCell => {
 				let td = document.createElement('td')
@@ -1019,7 +1046,7 @@
 		}
 		code = code.join(':')
 		selectedSpeechCodeIPA = speechCodes[code] ? speechCodes[code].ipa : ''
-		document.getElementById('speechAsciiLetter').innerHTML = `${img} [${selectedSpeechCodeIPA}]`
+		document.getElementById('speechAsciiLetter').innerHTML = `${img} /${selectedSpeechCodeIPA}/`
 		if (speechCodes[code] && ipa[speechCodes[code].ipa] && ipa[speechCodes[code].ipa].audio)
 			playIPA(speechCodes[code].ipa)
 		highlightAudioChoices()
