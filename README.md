@@ -4,7 +4,7 @@
 
 Try it at http://ajc5.github.io/visual-speech-keyboard!
 
-Visual Speech Keyboard lets you create speech sounds by setting the articulator positions of lips, tongue, vocal cords, and breath to match real speech organs. It is based on the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) and it helpful for learning the pronunciation of foreign words.
+Visual Speech Keyboard lets you create speech sounds by setting the articulator positions of lips, tongue, vocal cords, and breath to match real speech organs. It is based on the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) and it is helpful for learning the pronunciation of foreign words.
 
 Uses:
 - pronounce language sounds by viewing speech organ positions rather than reading transliterated approximations
