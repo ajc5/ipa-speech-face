@@ -99,8 +99,10 @@
  	<div style="float: right">
  		<select onchange="selectKeyboard(event)">
  			<option value="facePane">Face</option>
- 			<option value="alphabet">Alphabet</option>
- 			<option value="graphemes">Graphemes</option>
+			<optgroup label="Table:">
+	 			<option value="graphemes">Language Sounds (Graphemes)</option>
+	 			<option value="alphabet">Alphabet</option>
+			</optgroup>
  			<!--option value="asciiPane">ASCII</option-->
  		</select>
  	</div>
@@ -109,10 +111,12 @@
 	</div>
  	<div style="float: right">
  		<select onchange="selectLanguage(event)">
-	 		<option value="ipa">🗣️ All Sounds</option>
- 			<option value="en">🇬🇧 English</option>
- 			<option value="nl">🇳🇱 Dutch</option>
-			<option value="more">more...</option>
+	 		<option value="ipa">🗣️ Basic Sounds (IPA)</option>
+			<optgroup label="With language:">
+	 			<option value="en">🇬🇧 English</option>
+	 			<option value="nl">🇳🇱 Dutch</option>
+				<option value="more">more...</option>
+			</optgroup>
  		</select>
  	</div>
 	<span style="float: right">
@@ -802,7 +806,8 @@
 		dataGrid.forEach((dataRow, i) => {
 			let tr = document.createElement('tr')
 			let tdIdx = document.createElement('td')
-			tdIdx.innerHTML = `${i + 1}.`
+			if (i > 0)
+				tdIdx.innerHTML = `${i}.`
 			tr.appendChild(tdIdx)
 			let tdBtns = document.createElement('td')
 			let ipa = dataRow[dataRow.length - 1]
