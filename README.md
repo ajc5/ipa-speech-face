@@ -1,4 +1,4 @@
-# visual-vocals
+# visual-speech-keyboard
 
 [![batty](visual-vocals.png)](http://ajc5.github.io/visual-vocals)
 
