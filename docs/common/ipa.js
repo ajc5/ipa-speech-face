@@ -1184,6 +1184,7 @@ for (let [code, val] of Object.entries(speechCodes)) {
 }
 
 let graphemes = {
+	// source. populate ipa with graphemes.
 	en: {
 		"a": ["ɑː", "æ", "eɪ", "ə"],
 		"b": ["b"],
@@ -1232,6 +1233,7 @@ let graphemes = {
 		"y": ["j", "i"],
 		"z": ["z", "zj"]
 	},
+	// destionation. population this with values from ipa
 	nl: {
 		"a": [],
 		"aa": [],
@@ -1290,7 +1292,7 @@ let graphemes = {
 	}
 }
 
-Object.entries(ipa).forEach(([ipa, data]) => {
+Object.entries(ipa).forEach(([ipaVal, data]) => {
 	if (data.langs && data.langs.nl && data.langs.nl.graphemes) {
 		let g = data.langs.nl.graphemes
 		if (!Array.isArray(g)) {
@@ -1299,9 +1301,23 @@ Object.entries(ipa).forEach(([ipa, data]) => {
 		g.forEach(gg => {
 			if (!graphemes.nl[gg])
 				graphemes.nl[gg] = []
-			graphemes.nl[gg].push(ipa)
+			graphemes.nl[gg].push(ipaVal)
 		})
 	}
+})
+Object.entries(graphemes.en).forEach(([grapheme, ipaVals]) => {
+	ipaVals.forEach(ipaVal => {
+		let ipaObj = {langs: {en: {graphemes: []}}}
+		if (!ipa[ipaVal])
+			ipa[ipaVal] = ipaObj
+		if (!ipa[ipaVal].langs)
+			ipa[ipaVal].langs = ipaObj.langs
+		if (!ipa[ipaVal].langs.en)
+			ipa[ipaVal].langs.en = ipaObj.langs.en
+		if (!ipa[ipaVal].langs.en.graphemes)
+			ipa[ipaVal].langs.en.graphemes = ipaObj.langs.en.graphemes
+		ipa[ipaVal].langs.en.graphemes.push(grapheme)
+	})
 })
 
 let alphabetSimilarity = {
