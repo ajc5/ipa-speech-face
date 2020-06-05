@@ -21,6 +21,9 @@
 	  }
 	  .selImgPart {
 	  }
+	  .controlBarSelect {
+		  height: 2em;
+	  }
 	  .mover {
 		  opacity: .1;
 		  cursor: pointer;
@@ -61,6 +64,7 @@
 	  .dropdown-content {
 	    display: none;
 	    position: absolute;
+		left: 0;
 		background-color: white;
 		padding: 6px;
 	    min-width: 200px;
@@ -84,41 +88,39 @@
 	<!-- https://www.youtube.com/channel/UCFuOFZ0wFoHK2deKFldaLGA -->
 <svg id="imageAlphabet" style="display: none" width="100" height="400" viewBox="100 100 1000 1000"></svg>
 <div>
+	<select style="height: 2em" class="controlBarSelect" onchange="selectLanguage(event)">
+ 		<option value="ipa">🗣️ Base Sounds (IPA)</option>
+		<optgroup label="With language:">
+ 			<option value="nl" selected="selected">🇳🇱 Dutch</option>
+ 			<option value="en">🇬🇧 English</option>
+		</optgroup>
+		<option value="more">more ...</option>
+	</select>
+	&nbsp;&nbsp;&nbsp;&nbsp;
 	<span id="speechPlayer" style="display: none">
 		<button onclick="addIPAText(selectedFaceIPA)">➕</button>
 		<button onclick="playIPA(selectedFaceIPA)">▶️</button>
 	</span>
-	<div id="selectLetter" class="dropdown">
-		<span id="addLetter">🗣️</span>
-	  	<button class="dropbtn">▼</button>
-	  	<div class="dropdown-content"></div>
+	<div id="selectLetter" class="dropdown" style="border: solid black .1em; ">
+		<span id="addLetter"><span style="font-size: .8em">🗣️</span></span>
+		&nbsp;&nbsp;
+	  	<span class="dropbtn">▼</span>
+  		<div class="dropdown-content"></div>
 	</div>
 	<div style="float: right">
-		&nbsp;<a href="https://github.com/ajc5/visual-speech-keyboard" target="blank"><img alt="Visual Speech Keyboard on Github" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/25px-Octicons-mark-github.svg.png"/></a>
+		&nbsp;<a href="https://github.com/ajc5/speech-face" target="blank"><img alt="Speech Face on Github" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/25px-Octicons-mark-github.svg.png"/></a>
 	</div>
- 	<div style="float: right">
- 		<select onchange="selectKeyboard(event)">
- 			<option value="facePane">Face</option>
-			<optgroup label="List:">
-	 			<option value="graphemes">Language Sounds (Graphemes)</option>
-	 			<option value="alphabet">Alphabet</option>
-			</optgroup>
- 			<!--option value="asciiPane">ASCII</option-->
- 		</select>
- 	</div>
+	<select style="float: right;" class="controlBarSelect" onchange="selectKeyboard(event)">
+		<option value="facePane">Face</option>
+		<optgroup label="List:">
+ 			<option value="graphemes">Language Sounds (Graphemes)</option>
+ 			<option value="alphabet">Alphabet</option>
+		</optgroup>
+		<!--option value="asciiPane">ASCII</option-->
+	</select>
 	<div style="float: right">
 		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Keyboard-icon_Wikipedians.svg/40px-Keyboard-icon_Wikipedians.svg.png" />
 	</div>
- 	<div style="float: right">
- 		<select onchange="selectLanguage(event)">
-	 		<option value="ipa">🗣️ Base Sounds (IPA)</option>
-			<optgroup label="With language:">
-	 			<option value="nl" selected="selected">🇳🇱 Dutch</option>
-	 			<option value="en">🇬🇧 English</option>
-			</optgroup>
-			<option value="more">more ...</option>
- 		</select>
- 	</div>
 	<span style="float: right">
 		<span id="sentencePlayer" style="display: none">
 			<button onclick="playIPA(ipaSentence)">▶️</button>
@@ -663,7 +665,7 @@
 		return speechControls.breath[states[0]].img + speechControls.lips[states[1]].img + speechControls.tongue[states[2]].img + speechControls.throat[states[3]].img
 	  } else {
 	  	let x = 606 + (code.startsWith('open:') ? -135 : 0), xDiff = 560
-		return `<svg width="39" height="20" style="margin: 0; padding: 0; border: solid silver .01em" viewBox="${x} 300 ${x + xDiff} 550">
+		return `<svg width="39" height="20" style="margin: 0; position: relative; top: .3em; padding: 0; border: solid silver .01em" viewBox="${x} 300 ${x + xDiff} 550">
 			<use href="#${code}Img" transform="scale(1.9)"></svg>`
 	  }
 	}
@@ -726,7 +728,7 @@
 		 
 	function selectLanguage(e) {
 		if (e.target.value === "more") {
-			alert('We are looking for contributors. Interested? Please submit your work via a pull request at https://github.com/ajc5/visual-speech-keyboard. Thanks.')
+			alert('We are looking for contributors. Interested? Please submit your work via a pull request at https://github.com/ajc5/speech-face. Thanks.')
 			e.target.value = selectedLanguage
 		}
 		selectedLanguage = e.target.value
