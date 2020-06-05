@@ -1,12 +1,30 @@
 
-// 1. ipa transliteration (or direct?)
+// 1. DONE (mouth shape letters) - ipa transliteration (or direct?)
 // 2. ipa emoji hint (sound colors?)
-// 3. ipa mouth shapes (side/front)
+// 3. DONE - ipa mouth shapes (side/front)
 // 4. kareoke practice: write/speak in language to match
-// 5. word emojis 
+// 5. STARTED - word emojis 
 // 6. word POS
 // 7. translation (by word and phrase)
-// TODO ipa letter audio, word audio
+// 8. ipa letter audio, word audio
+
+/*
+Format:
+
+let ipa = {
+	<ipaLetter>: {
+		audio: <audio link>,
+		speechCode: <speech code>,
+		langs: {
+				<two letter language code>: {
+					graphemes: <array of graphemes (strings)>
+				}
+			}
+		}
+	}
+}
+
+*/
 
 let ipaCommon = {
   "æ": {
@@ -36,10 +54,7 @@ let ipaCommon = {
         iconText: "arm",
         pre: "a",
         say: "a(h)"
-      },
-	  nl: {
-		  graphemes: "a"
-	  }
+      }
     }
   },
   "oː": {
@@ -50,10 +65,7 @@ let ipaCommon = {
 	        iconText: "airplane",
 	        pre: "a",
 	        say: "a"
-	  	},
-		nl: {
-			graphemes: "oo"
-		}
+	  	}
 	  }
   },
   "e": {
@@ -69,11 +81,7 @@ let ipaCommon = {
   },
   "ɛ": {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/7/71/Open-mid_front_unrounded_vowel.ogg",
-	  langs: {
-		  nl: {
-			  graphemes: ["e", "ee"]
-		  }
-	  }
+	  langs: {}
   },
   "h": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/d/da/Voiceless_glottal_fricative.ogg",
@@ -83,10 +91,7 @@ let ipaCommon = {
         iconText: "hummingbird",
         pre: "h",
         say: "h"
-      },
-	  nl: {
-		  graphemes: "h"
-	  }
+      }
     }
   },
   "i": {
@@ -97,10 +102,7 @@ let ipaCommon = {
         iconText: "inbox",
         pre: "i",
         say: "e(e)"
-      },
-	  nl: {
-		  graphemes: "ie"
-	  }
+      }
     }
   },
   "o": {
@@ -125,11 +127,7 @@ let ipaCommon = {
     }
   },
   "øː": {
-	  langs: {
-		  nl: {
-			  graphemes: "eu"
-		  }
-	  }
+	  langs: {}
   },
   "y": {
     audio: "https://upload.wikimedia.org/wikipedia/commons/e/ea/Close_front_rounded_vowel.ogg",
@@ -139,10 +137,7 @@ let ipaCommon = {
         iconText: "ooze",
         pre: "oo",
         say: "oo"
-      },
-	  nl: {
-		  graphemes: "uu"
-	  }
+      }
     }
   },
   "w": {
@@ -153,10 +148,7 @@ let ipaCommon = {
         iconText: "wine",
         pre: "w",
         say: "w"
-      },
-	  nl: {
-		  graphemes: "w"
-	  }
+      }
     }
   },
   "x": {
@@ -168,15 +160,12 @@ let ipaCommon = {
         pre: "h",
         foreign: "nl",
         say: "hg"
-      },
-	  nl: {
-		  graphemes: ["ch", "g"]
-	  }
+      }
     }
   }
 }
 
-// https://img.icons8.com/color/26/000000/father.png
+
 let ipa = {
   "ɑ": ipaCommon["ɑ"],
   "a": {
@@ -192,42 +181,22 @@ let ipa = {
   },
   "æ": ipaCommon["æ"],
   "œː": {
-	  langs: {
-		  nl: {
-			  graphemes: "eu"
-		  }
-	  }
+	  langs: {}
   },
   "aː": {
-	  langs: {
-		  nl: {
-			  graphemes: "aa"
-		  }
-	  }
+	  langs: {}
   },
   "ɑi": {
-	  langs: {
-		  nl: {
-			  graphemes: "ai"
-		  }
-	  }
+	  langs: {}
   },
   "aːi":  {
-	  langs: {
-		  nl: {
-			  graphemes: "aai"
-		  }
-	  }
+	  langs: {}
   },
   "ɐ": {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/1/1e/PR-near-open_central_unrounded_vowel.ogg"	
   },
   "ɑ̃ː": {
-	  langs: {
-		  nl: {
-			  graphemes: "en"
-		  }
-	  }
+	  langs: {}
   },
   "ä": {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/5/50/Open_central_unrounded_vowel.ogg"
@@ -246,10 +215,7 @@ let ipa = {
         iconText: "butterfly",
         pre: "b",
         say: "b"
-      },
-	  nl: {
-		  graphemes: "b"
-	  }
+      }
     }
   },
   "c": {
@@ -260,25 +226,14 @@ let ipa = {
         iconText: "cheese",
         pre: "ch",
         say: "ch"
-      },
-	  nl: {
-		  graphemes: ["tj", "ch"]
-	  }
+      }
     }
   },
   "ɔː": {
-	  langs: {
-		  nl: {
-			  graphemes: "o"
-		  }	
-	  }
+	  langs: {}
   },
   "ɔi": {
-	  langs: {
-		  nl: {
-			  graphemes: "oi"
-		  }	
-	  }
+	  langs: {}
   },
   "d": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/0/01/Voiced_alveolar_plosive.ogg",
@@ -288,10 +243,7 @@ let ipa = {
         iconText: "duck",
         pre: "d",
         say: "d"
-      },
-	  nl: {
-		  graphemes: "d"
-	  }
+      }
     }
   },
   "ɖ": {
@@ -299,11 +251,7 @@ let ipa = {
   },
   "e": ipaCommon["e"],
   "eːu": {
-	  langs: {
-		  nl: {
-			  graphemes: "eeuw"
-		  }
-	  }
+	  langs: {}
   },
   "ɛ": ipaCommon["ɛ"],
   "ɘ": {
@@ -311,26 +259,14 @@ let ipa = {
   },
   "ə": {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Mid-central_vowel.ogg",
-	  langs: {
-		  nl: {
-			  graphemes: "e"
-		  }
-	  }
+	  langs: {}
   },
   "ɛː": ipaCommon["ɛ"],
   "ɛ̃ː":  {
-	  langs: {
-		  nl: {
-			  graphemes: "ain"
-		  }
-	  }
+	  langs: {}
   },
   "ɛi": {
-	  langs: {
-		  nl: {
-			  graphemes: ["ij", "ei"]
-		  }
-	  }
+	  langs: {}
   },
   "eː": ipaCommon["ɛ"],
   "ɜ": {
@@ -353,10 +289,7 @@ let ipa = {
         iconText: "feet",
         pre: "f",
         say: "f"
-      },
-	  nl: {
-		  graphemes: "f"
-	  }
+      }
     }
   },
   "g": {
@@ -367,39 +300,24 @@ let ipa = {
         iconText: "goat",
         pre: "g",
         say: "g"
-      },
-	  nl: {
-		  graphemes: "g"
-	  }
+      }
     }
   },
   "h": ipaCommon["h"],
   "ɦ": ipaCommon["h"],
   "i": ipaCommon["i"],
   "iː": {
-	  langs: {
-		  nl: {
-			  graphemes: "y"
-		  }
-	  }
+	  langs: {}
   },
   "ɨ": {
   	audio: "https://upload.wikimedia.org/wikipedia/commons/5/53/Close_central_unrounded_vowel.ogg"
   },
   "ɪ": {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Near-close_near-front_unrounded_vowel.ogg",
-	  langs: {
-		  nl: {
-			  graphemes: "i"
-		  }
-	  }
+	  langs: {}
   },
   "iu": {
-	  langs: {
-		  nl: {
-			  graphemes: "ieuw"
-		  }
-	  }
+	  langs: {}
   },
   "ɟ": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/1/1d/Voiced_palatal_plosive.ogg",
@@ -409,10 +327,7 @@ let ipa = {
         iconText: "jigsaw",
         pre: "j",
         say: "j"
-      },
-	  nl: {
-		  graphemes: "g"
-	  }
+      }
     }
   },
   "j": {
@@ -423,10 +338,7 @@ let ipa = {
         iconText: "yacht",
         pre: "y",
         say: "y"
-      },
-	  nl: {
-		  graphemes: "j"
-	  }
+      }
     }
   }, 
   "k": {
@@ -437,10 +349,7 @@ let ipa = {
         iconText: "cup",
         pre: "c",
         say: "c"
-      },
-	  nl: {
-		  graphemes: ["k", "c"]
-	  }
+      }
     }
   }, 
   "l": {
@@ -451,10 +360,7 @@ let ipa = {
         iconText: "lamp",
         pre: "l",
         say: "l"
-      },
-	  nl: {
-		  graphemes: "l"
-	  }
+      }
     }
   },
   "ɭ": {
@@ -471,10 +377,7 @@ let ipa = {
         iconText: "magnet",
         pre: "m",
         say: "m"
-      },
-	  nl: {
-		  graphemes: "m"
-	  }
+      }
     }
   },
   "n": {
@@ -485,10 +388,7 @@ let ipa = {
         iconText: "necklace",
         pre: "n",
         say: "n"
-      },
-	  nl: {
-		  graphemes: "n"
-	  }
+      }
     }
   },
   "ɲ": {
@@ -499,10 +399,7 @@ let ipa = {
         iconText: "neural",
         pre: "ne",
         say: "ny"
-      },
-	  nl: {
-		  graphemes: ["nj", "n"]
-	  }
+      }
     }
   }, 
   "ŋ": {
@@ -513,10 +410,7 @@ let ipa = {
         iconText: "so[ng]",
         pre: "ng",
         say: "ng"
-      },
-	  nl: {
-		  graphemes: "ng"
-	  }
+      }
     }
   },
   "ɳ": {
@@ -525,11 +419,7 @@ let ipa = {
   "o": ipaCommon["o"],
   "oː": ipaCommon["oː"],
   "oːi": {
-	  langs: {
-		  nl: {
-			  graphemes: "oo"
-		  }
-	  }
+	  langs: {}
   },
   "ɔ": {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/d/d0/PR-open-mid_back_rounded_vowel.ogg",
@@ -539,18 +429,11 @@ let ipa = {
           iconText: "octopus",
           pre: "o",
           say: "O"
-        },
-		nl: {
-			graphemes: "o"
-		}
+        }
       }
   },
   "ɔ̃ː":  {
-	  langs: {
-		  nl: {
-			  graphemes: "on"
-		  }
-	  }
+	  langs: {}
   },
   "ɞ": {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Open-mid_central_rounded_vowel.ogg"
@@ -589,11 +472,7 @@ let ipa = {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Near-close_near-back_rounded_vowel.ogg"
   },
   "ʌu": {
-	  langs: {
-		  nl: {
-			  graphemes: ["ou", "auw"]
-		  }
-	  }
+	  langs: {}
   },
   "ɤ": {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/2/26/Close-mid_back_unrounded_vowel.ogg"
@@ -606,10 +485,7 @@ let ipa = {
         iconText: "palm",
         pre: "p",
         say: "p"
-      },
-	  nl: {
-		  graphemes: ["p", "b"]
-	  }
+      }
     }
   },
   "r": {
@@ -621,10 +497,7 @@ let ipa = {
         pre: "r",
         say: "r",
         foreign: "fr"
-      },
-	  nl: {
-		  graphemes: "r"
-	  }
+      }
     }
   },
   "ɹ": {
@@ -647,10 +520,7 @@ let ipa = {
         iconText: "sock",
         pre: "s",
         say: "s"
-      },
-	  nl: {
-		  graphemes: "s"
-	  }
+      }
     }
   },
   "ʂ": {
@@ -664,10 +534,7 @@ let ipa = {
         iconText: "shoe",
         pre: "sh",
         say: "sh"
-      },
-	  nl: {
-	  	graphemes: ["sj", "ch"]
-	  }
+      }
     }
   },
   "ʈ": {
@@ -687,10 +554,7 @@ let ipa = {
         iconText: "vi[si]on",
         pre: "si",
         say: "zh"
-      },
-	  nl: {
-		  graphemes: "j"
-	  }
+      }
     }
   },
   "ɖʐ": {
@@ -707,10 +571,7 @@ let ipa = {
         iconText: "tunnel",
         pre: "t",
         say: "t"
-      },
-	  nl: {
-		  graphemes: ["t", "d"]
-	  }
+      }
     }
   },
   "θ": {
@@ -735,18 +596,11 @@ let ipa = {
         iconText: "up",
         pre: "u",
         say: "u(h)"
-      },
-	  nl: {
-		  graphemes: "u"
-	  }
+      }
     }
   },
   "ui": {
-	  langs: {
-		  nl: {
-			  graphemes: "oei"
-		  }
-	  }
+	  langs: {}
   },
   "œy": {
     langs: {
@@ -755,26 +609,15 @@ let ipa = {
         iconText: "h[ou]se",
         pre: "ou",
         say: "ou"
-      },
-	  nl: {
-		  graphemes: "ui"
-	  }
+      }
     }
   },  
   "y": ipaCommon["y"],
   "yː": {
-	  langs: {
-		  nl: {
-			  graphemes: "u"
-		  }
-	  }
+	  langs: {}
   },
   "yu": {
-	  langs: {
-		  nl: {
-			  graphemes: "uw"
-		  }
-	  }
+	  langs: {}
   },
   "u": {
 		audio: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Close_back_rounded_vowel.ogg",
@@ -784,11 +627,7 @@ let ipa = {
 	        iconText: "ooze",
 	        pre: "oo",
 	        say: "oo"
-	      },
-		  nl: {
-			  graphemes: "oe"
-		  }
-	    }
+	      },  }
   },
   "v": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/8/85/Voiced_labiodental_fricative.ogg",
@@ -798,10 +637,7 @@ let ipa = {
         iconText: "vending-machine",
         pre: "v",
         say: "v"
-      },
-	  nl: {
-		  graphemes: "v"
-	  }
+      }
     }
   },
   "w": ipaCommon["w"],
@@ -809,11 +645,7 @@ let ipa = {
   "x": ipaCommon["x"],
   "ɣ": {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/4/47/Voiced_velar_fricative.ogg",
-	  langs: {
-		  nl: {
-			  graphemes: "g"
-		  }
-	  }
+	  langs: {}
   },
   "z": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Voiced_alveolar_sibilant.ogg",
@@ -823,10 +655,7 @@ let ipa = {
         iconText: "zip",
         pre: "z",
         say: "z"
-      },
-	  nl: {
-		  graphemes: "z"
-	  }
+      }
     }
   },
   "ʐ": {
@@ -1184,7 +1013,6 @@ for (let [code, val] of Object.entries(speechCodes)) {
 }
 
 let graphemes = {
-	// source. populate ipa with graphemes.
 	en: {
 		"a": ["ɑː", "æ", "eɪ", "ə"],
 		"b": ["b"],
@@ -1233,91 +1061,78 @@ let graphemes = {
 		"y": ["j", "i"],
 		"z": ["z", "zj"]
 	},
-	// destionation. population this with values from ipa
 	nl: {
-		"a": [],
-		"aa": [],
-		"aai": [],
-		"ai": [],
-		"ain": [],
-		"auw": [],
-		"b": [],
-		"c": [],
-		"ch": [],
-		"d": [],
-		"e": [],
-		"ee": [],
-		"eeuw": [],
-		"ei": [],
-		"en": [],
-		"eu": [],
-		"f": [],
-		"g": [],
-		"h": [],
-		"i": [],
-		"ie": [],
-		"ieuw": [],
-		"ij": [],
-		"j": [],
-		"k": [],
-		"l": [],
-		"m": [],
-		"n": [],
-		"ng": [],
-		"nj": [],
-		"o": [],
-		"oe": [],
-		"oei": [],
-		"oi": [],
-		"on": [],
-		"oo": [],
-		"ooi": ["oːi"],
-		"ou": [],
-		"p": [],
-		"q": ['ku'],
-		"r": [],
-		"s": [],
-		"sj": [],
-		"t": [],
-		"tj": [],
-		"u": [],
-		"ui": [],
-		"uu": [],
-		"uw": [],
-		"v": [],
-		"w": [],
-		"x": ['z'],
-		"y": [],
-		"z": []
+	 "a": ["ɑ"],
+	 "aa": ["aː"],
+	 "aai": ["aːi"],
+	 "ai": ["ɑi"],
+	 "ain": ["ɛ̃ː"],
+	 "auw": ["ʌu"],
+	 "b": ["b","p"],
+	 "c": ["k"],
+	 "ch": ["c","ʃ","x"],
+	 "d": ["d","t"],
+	 "e": ["ɛ","ə","ɛː","eː"],
+	 "ee": ["ɛ","ɛː","eː"],
+	 "eeuw": ["eːu"],
+	 "ei": ["ɛi"],
+	 "en": ["ɑ̃ː"],
+	 "eu": ["œː"],
+	 "f": ["f"],
+	 "g": ["g","ɟ","x","ɣ"],
+	 "h": ["h","ɦ"],
+	 "i": ["ɪ"],
+	 "ie": ["i"],
+	 "ieuw": ["iu"],
+	 "ij": ["ɛi"],
+	 "j": ["j","ʒ"],
+	 "k": ["k"],
+	 "l": ["l"],
+	 "m": ["m"],
+	 "n": ["n","ɲ"],
+	 "ng": ["ŋ"],
+	 "nj": ["ɲ"],
+	 "o": ["ɔː","ɔ"],
+	 "oe": ["u"],
+	 "oei": ["ui"],
+	 "oi": ["ɔi"],
+	 "on": ["ɔ̃ː"],
+	 "oo": ["oːi"],
+	 "ooi": ["oːi"],
+	 "ou": ["ʌu"],
+	 "p": ["p"],
+	 "q": ["ku"],
+	 "r": ["r"],
+	 "s": ["s"],
+	 "sj": ["ʃ"],
+	 "t": ["t"],
+	 "tj": ["c"],
+	 "u": ["ʏ","yː"],
+	 "ui": ["œy"],
+	 "uu": ["y"],
+	 "uw": ["yu"],
+	 "v": ["v"],
+	 "w": ["w","ʋ"],
+	 "x": ["z"],
+	 "y": ["iː"],
+	 "z": ["z"]
 	}
 }
-
-Object.entries(ipa).forEach(([ipaVal, data]) => {
-	if (data.langs && data.langs.nl && data.langs.nl.graphemes) {
-		let g = data.langs.nl.graphemes
-		if (!Array.isArray(g)) {
-			g = [g]
-		}
-		g.forEach(gg => {
-			if (!graphemes.nl[gg])
-				graphemes.nl[gg] = []
-			graphemes.nl[gg].push(ipaVal)
+Object.entries(graphemes).forEach(([lang, langGraphemes]) => {
+	Object.entries(langGraphemes).forEach(([grapheme, ipaVals]) => {
+		ipaVals.forEach(ipaVal => {
+			let ipaObj = {langs: {[lang]: {graphemes: []}}}
+			if (!ipa[ipaVal])
+				ipa[ipaVal] = ipaObj
+			if (!ipa[ipaVal].langs)
+				ipa[ipaVal].langs = ipaObj.langs
+			if (!ipa[ipaVal].langs[lang])
+				ipa[ipaVal].langs[lang] = ipaObj.langs[lang]
+			if (!ipa[ipaVal].langs[lang].graphemes)
+				ipa[ipaVal].langs[lang].graphemes = ipaObj.langs[lang].graphemes
+			ipa[ipaVal].langs[lang].graphemes.push(grapheme)
 		})
-	}
-})
-Object.entries(graphemes.en).forEach(([grapheme, ipaVals]) => {
-	ipaVals.forEach(ipaVal => {
-		let ipaObj = {langs: {en: {graphemes: []}}}
-		if (!ipa[ipaVal])
-			ipa[ipaVal] = ipaObj
-		if (!ipa[ipaVal].langs)
-			ipa[ipaVal].langs = ipaObj.langs
-		if (!ipa[ipaVal].langs.en)
-			ipa[ipaVal].langs.en = ipaObj.langs.en
-		if (!ipa[ipaVal].langs.en.graphemes)
-			ipa[ipaVal].langs.en.graphemes = ipaObj.langs.en.graphemes
-		ipa[ipaVal].langs.en.graphemes.push(grapheme)
-	})
+	})	
 })
 
 let alphabetSimilarity = {
