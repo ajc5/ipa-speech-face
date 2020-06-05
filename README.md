@@ -1,10 +1,10 @@
 # visual-speech-keyboard
 
-[![batty](visual-vocals.png)](http://ajc5.github.io/visual-vocals)
+[![batty](visual-vocals.png)](http://ajc5.github.io/speech-face)
 
-Try it at http://ajc5.github.io/visual-speech-keyboard!
+Try it at http://ajc5.github.io/speech-face!
 
-Visual Speech Keyboard lets you create speech sounds by setting the articulator positions of lips, tongue, vocal cords, and breath to match real speech organs. It is based on the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) and it is helpful for learning the pronunciation of foreign words.
+Speech Face lets you generate speech sounds by setting the positions of the speech organs like you would do in real speech. It is based on the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) and it is useful for learning  pronunciation.
 
 Uses:
 - pronounce language sounds by viewing speech organ positions rather than reading transliterated approximations
