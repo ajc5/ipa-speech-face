@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Speech Face: interactive visualization of the IPA (International Phonetic Alphabet)</title>
+  <meta name="description" content="Demonstrates the anatomy of speech. Follows the IPA and designed to be used as a universal language script.">
   <meta charset="UTF-8">
   <style>
 	  body {
@@ -93,16 +95,18 @@
 		<optgroup label="With language:">
  			<option value="nl" selected="selected">🇳🇱 Dutch</option>
  			<option value="en">🇬🇧 English</option>
+			<option value="more">more ...</option>
 		</optgroup>
-		<option value="more">more ...</option>
 	</select>
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	<span id="speechPlayer" style="display: none">
 		<button onclick="addIPAText(selectedFaceIPA)">➕</button>
 		<button onclick="playIPA(selectedFaceIPA)">▶️</button>
 	</span>
-	<div id="selectLetter" class="dropdown" style="border: solid black .1em; ">
-		<span id="addLetter"><span style="font-size: .8em">🗣️</span></span>
+	<div id="selectLetter" class="dropdown" style="border: solid black .1em; padding-left: .1em; padding-right: .1em">
+		<span id="addLetter">
+			<span style="font-size: .8em">🗣️</span>
+		</span>
 		&nbsp;&nbsp;
 	  	<span class="dropbtn">▼</span>
   		<div class="dropdown-content"></div>
@@ -339,7 +343,7 @@
 	let wordLists = {
 		"en":  "English",
 		"nl": "Dutch",
-		"ipa": "Articulation (breath, lips, tongue, vocal cords)",
+		"ipa": "Articulation (airflow, lips, tongue, vocal cords)",
 		"graphemes": "Grapheme"
 	}
     let ipaSentence = "",
@@ -766,11 +770,11 @@
 	
 	function generateDataAndSpeechTable() {
 		let dataGrid = []
-		if (selectedKeyboardOption === 'graphemes' && selectedLanguage !== 'ipa') {
+		if (selectedKeyboardOption === 'graphemes' || selectedLanguage === 'ipa') {
 			dataGrid.push([wordLists[selectedLanguage], 'Visual Speech', 'IPA'])
 			Object.entries(graphemes[selectedLanguage]).forEach(([grapheme, ipas]) => {
 				ipas.forEach(ipa => {
-					dataGrid.push([grapheme, getVisualScript(ipa), ipa])
+					dataGrid.push([selectedLanguage === 'ipa' ? getFormattedSpeechCode(grapheme) : grapheme, getVisualScript(ipa), ipa])
 				})
 			})
 		} else { // selectedKeyboardOption === 'alphabet'
@@ -798,10 +802,14 @@
 					&& ipa[langs.ipa].langs[translit]
 					&& ipa[langs.ipa].langs[translit].graphemes)
 				translitText = ipa[langs.ipa].langs[translit].graphemes.toString()
-			dataGrid.push([lang === "ipa" ? word.replace(/:/gi, ', ').replace(/_/gi, '-') : word, translitText, getVisualScript(langs.ipa), langs.ipa])
+			dataGrid.push([lang === "ipa" ? getFormattedSpeechCode(word) : word, translitText, getVisualScript(langs.ipa), langs.ipa])
 		}
 	}
 
+	function getFormattedSpeechCode(word) {
+		return word.replace(/:/gi, ', ').replace(/_/gi, '-')
+	}
+	
 	function generateSpeechTable(dataGrid) {
 		let table = document.getElementById("speechKeyboard")
 		table.querySelectorAll('tr').forEach(tr => tr.parentNode.removeChild(tr))
