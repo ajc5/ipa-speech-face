@@ -4,7 +4,7 @@
 
 Try it at http://ajc5.github.io/speech-face!
 
-Speech Face lets you generate speech sounds by setting the positions of the speech organs like you would do in real speech. It is based on the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) (International Phonetic Alphabet) and it is useful for learning  pronunciation.
+Speech Face lets you generate speech sounds by setting the positions of the speech organs like you would do in real speech. It is a visual representation of the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) (International Phonetic Alphabet) chart and is designed to help in learning pronunciation.
 
 Uses:
 - pronounce language sounds by viewing speech organ positions rather than reading transliterated approximations
