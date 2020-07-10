@@ -4,12 +4,12 @@
 
 Try it at http://ajc5.github.io/speech-face!
 
-Speech Face lets you generate speech sounds by setting the positions of the speech organs like you would do in real speech. It is a visualization of the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) (International Phonetic Alphabet) chart and is designed to help in learning pronunciation.
+Speech Face lets you generate sounds by controlling a virtual mouth. The virtual mouth is like a musical instrument controls as speech organs, ie, mouth, tongue, vocal cords and breath.  It is a visualization of the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) (International Phonetic Alphabet) chart. An alphabetization of the speech positions has also been created so that people can share pronunciations using symbols that are intuitive to understand and easy to write.
 
 Uses:
 - pronounce language sounds by viewing speech organ positions rather than guessing from transliterations
-- learn language sounds without the additional burden of memorizing abstract scripts. Good for kids.
-- learn how to pronounce words by knowing which speech organs to control. Good for the deaf, blind and speech impaired.
-- learn unfamiliar language scripts quickly by mapping them to their visual vocalizations
+- learn language sounds without the additional burden of memorizing abstract scripts. Helps kids.
+- learn how to pronounce words by knowing which speech organs to control. Helps the handicapped: deaf, blind and speech impaired.
+- learn unfamiliar language scripts quickly by mapping them to their visual vocalizations. Helps voice actors and customer service representatives.
 - pronounce new words correctly in non-phonetic languages like English
 - pronounce words without confusion when languages share the same script but have different pronunciations, eg, the letter A in Dutch and English.
