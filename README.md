@@ -4,7 +4,7 @@
 
 Try it at http://ajc5.github.io/speech-face!
 
-Speech Face lets you generate sounds by controlling a virtual mouth. The virtual mouth is like a musical instrument controls as speech organs, ie, mouth, tongue, vocal cords and breath.  It is a visualization of the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) (International Phonetic Alphabet) chart. An alphabetization of the speech positions has also been created so that people can share pronunciations using symbols that are intuitive to understand and easy to write.
+Speech Face lets you generate sounds by controlling a virtual mouth. The virtual mouth is like a musical instrument with speech organs (mouth, tongue, vocal cords and breath) as its controls.  It is a visualization of the [IPA] (https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) (International Phonetic Alphabet). An alphabetization of the speech positions has also been created so that people can share pronunciations using symbols that are intuitive to understand and easy to write.
 
 Uses:
 - pronounce language sounds by viewing speech organ positions rather than guessing from transliterations
