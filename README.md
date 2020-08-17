@@ -1,8 +1,8 @@
 # ipa-speech-face
 
-[![batty](visual-vocals.png)](http://ajc5.github.io/speech-face)
+[![batty](visual-vocals.png)](http://ajc5.github.io/ipa-speech-face)
 
-[Try it!](http://ajc5.github.io/speech-face)
+[Try it!](http://ajc5.github.io/ipa-speech-face)
 
 Speech Face lets you generate sounds by controlling a virtual mouth. Use the virtual mouth like a musical instrument with speech organs as its controls (ie, mouth, tongue, vocal cords and breath).  Speech Face is a visualization of the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) (International Phonetic Alphabet). An alphabet has also been created from the speech positions so that people can share pronunciations based on actual speech symbols.
 
