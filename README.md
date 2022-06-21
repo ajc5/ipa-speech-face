@@ -6,6 +6,8 @@
 
 Speech Face lets you generate sounds by controlling a virtual mouth. Use the virtual mouth like a musical instrument with speech organs as its controls (ie, mouth, tongue, vocal cords and breath).  Speech Face is a visualization of the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) (International Phonetic Alphabet). An alphabet has also been created from the speech positions so that people can share pronunciations based on actual speech symbols.
 
+Check out [Seeing Speech](https://www.seeingspeech.ac.uk/ipa-charts/) from the University of Glasgow to see cross-sectional recordings of the face while making speech sounds.
+
 Uses:
 - pronounce language sounds by viewing speech organ positions rather than guessing from transliterations
 - learn language sounds without the additional burden of memorizing abstract scripts. Makes it easier for kids to learn language.
