@@ -90,19 +90,17 @@
 	<!-- https://www.youtube.com/channel/UCFuOFZ0wFoHK2deKFldaLGA -->
 <svg id="imageAlphabet" style="display: none" width="100" height="400" viewBox="100 100 1000 1000"></svg>
 <div>
-	<select style="height: 2em" class="controlBarSelect" onchange="selectLanguage(event)">
- 		<option value="ipa">🗣️ Base Sounds (IPA)</option>
-		<optgroup label="With language:">
- 			<option value="nl" selected="selected">🇳🇱 Dutch</option>
- 			<option value="en">🇬🇧 English</option>
-			<option value="more">more ...</option>
-		</optgroup>
-	</select>
-	&nbsp;&nbsp;&nbsp;&nbsp;
 	<span id="speechPlayer" style="display: none">
 		<button onclick="addIPAText(selectedFaceIPA)">➕</button>
 		<button onclick="playIPA(selectedFaceIPA)">▶️</button>
 	</span>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	<select style="height: 2em" class="controlBarSelect" onchange="selectLanguage(event)">
+ 		<option value="ipa" selected="selected">🗣️ IPA</option>
+ 		<option value="en">🇬🇧 English</option>
+ 		<option value="nl" >🇳🇱 Dutch</option>
+		<option value="more">more ...</option>
+	</select>
 	<div id="selectLetter" class="dropdown" style="border: solid black .1em; padding-left: .1em; padding-right: .1em">
 		<span id="addLetter">
 			<span style="font-size: .8em">🗣️</span>
@@ -116,10 +114,8 @@
 	</div>
 	<select style="float: right;" class="controlBarSelect" onchange="selectKeyboard(event)">
 		<option value="facePane">Face</option>
-		<optgroup label="List:">
- 			<option value="graphemes">Language Sounds (Graphemes)</option>
- 			<option value="alphabet">Alphabet</option>
-		</optgroup>
+ 		<option value="alphabet">Alphabet</option>
+ 		<option value="graphemes">Language Sounds (Graphemes)</option>
 		<!--option value="asciiPane">ASCII</option-->
 	</select>
 	<div style="float: right">
