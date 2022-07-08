@@ -8,8 +8,6 @@ Speech Face lets you generate sounds by controlling a virtual mouth. Use the vir
 
 An alphabet has been created out of the speech positions to aid in learning phonetics and languages. The speech position "letters" have been designed for easy reading and writing. As a script, it is intuitive to learn since it mimics actual speech and it can be used as a base script for all languages. It is a replacement for IPA's greek symbols based script which few people bother to memorize.
 
-Check out [Seeing Speech](https://www.seeingspeech.ac.uk/ipa-charts/) from the University of Glasgow to see cross-sectional recordings of the face while making speech sounds.
-
 Uses:
 - pronounce language sounds by viewing speech organ positions rather than guessing from transliterations
 - learn language sounds without the additional burden of memorizing abstract scripts. Makes it easier for kids to learn language.
