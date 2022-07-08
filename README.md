@@ -6,7 +6,7 @@
 
 Speech Face lets you generate sounds by controlling a virtual mouth. Use the virtual mouth like a musical instrument with speech organs as its controls (ie, mouth, tongue, vocal cords and breath).  Speech Face is a visualization of the [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) (International Phonetic Alphabet). 
 
-An alphabet has been created out of the speech positions for using as a common pronunciation guide for learning phonetics and languages. The speech position "letters" have been designed for easy reading, writing and compactness. As a common script it is intuitive to learn since it mimics actual speech, and acts as a base script for all other language scripts. It is a replacement for greek symbols based IPA, which is supposed provide a common pronunciation guide, but in practice is mainly used in academia and requires knowing the latin script.
+An alphabet has been created out of the speech positions to aid in learning phonetics and languages. The speech position "letters" have been designed for easy reading and writing. As a script, it is intuitive to learn since it mimics actual speech and it can be used as a base script for all languages. It is a replacement for IPA's greek symbols based script which few people bother to memorize.
 
 Check out [Seeing Speech](https://www.seeingspeech.ac.uk/ipa-charts/) from the University of Glasgow to see cross-sectional recordings of the face while making speech sounds.
 
