@@ -55,30 +55,7 @@
 		fill: transparent;
 		marker-start: url(#arrow);
 	  }
-	  .dropbtn {
-		font-size: medium;
-	  }
-	  .dropdown {
-	    position: relative;
-	    display: inline-block;
-		cursor: pointer;
-	  }
-	  .dropdown-content {
-	    display: none;
-	    position: absolute;
-		left: 0;
-		background-color: white;
-		padding: 6px;
-	    min-width: 200px;
-	    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	    z-index: 1;
-	  }
-	  .dropdown-content .option:hover {
-		  background-color: lightgrey;
-	  }
-	  .dropdown:hover .dropdown-content {
-		  display: block;
-	  }
+	  
   </style>
   <script type="text/javascript" src="https://rawcdn.githack.com/itinerarium/phoneme-synthesis/499583531c5013559ebb64e1e1eae928bd2f6528/mespeak.js"></script>
 	<script type="text/javascript">
@@ -89,33 +66,21 @@
 <body>
 	<!-- https://www.youtube.com/channel/UCFuOFZ0wFoHK2deKFldaLGA -->
 <svg id="imageAlphabet" style="display: none" width="100" height="400" viewBox="100 100 1000 1000"></svg>
-<div>
-	<span id="speechPlayer" style="display: none">
-		<button onclick="addIPAText(selectedFaceIPA)">➕</button>
-		<button onclick="playIPA(selectedFaceIPA)">▶️</button>
-	</span>
-	&nbsp;&nbsp;&nbsp;&nbsp;
-	<select style="height: 2em" class="controlBarSelect" onchange="selectLanguage(event)">
- 		<option value="ipa" selected="selected">🗣️ IPA</option>
- 		<option value="en">🇬🇧 English</option>
- 		<option value="nl" >🇳🇱 Dutch</option>
-		<option value="more">more ...</option>
+<div style="z-index: 1; padding: .1em; border: 1px solid black; background: lightsteelblue; position: fixed; top: 0; left: 0; width: 100%">
+	<select id="langSelector" style="height: 2em" class="controlBarSelect" onchange="selectLanguage(event)">
+		<option value="ipa" selected="selected">🗣️ IPA</option>
+		<option value="en">🇬🇧 English</option>
+		<option value="nl" >🇳🇱 Dutch</option>
 	</select>
-	<div id="selectLetter" class="dropdown" style="border: solid black .1em; padding-left: .1em; padding-right: .1em">
-		<span id="addLetter">
-			<span style="font-size: .8em">🗣️</span>
-		</span>
-		&nbsp;&nbsp;
-	  	<span class="dropbtn">▼</span>
-  		<div class="dropdown-content"></div>
+	<div style="float: right; padding-left: .5em; padding-right: .5em">
+		<a href="https://github.com/ajc5/ipa-speech-face" target="blank">
+			<img alt="Speech Face on Github" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/25px-Octicons-mark-github.svg.png"/>
+		</a>
 	</div>
-	<div style="float: right">
-		&nbsp;<a href="https://github.com/ajc5/ipa-speech-face" target="blank"><img alt="Speech Face on Github" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/25px-Octicons-mark-github.svg.png"/></a>
-	</div>
-	<select style="float: right;" class="controlBarSelect" onchange="selectKeyboard(event)">
+	<select id="viewSelector" style="float: right;" class="controlBarSelect" onchange="selectKeyboard(event)">
 		<option value="facePane">Face</option>
- 		<option value="alphabet">Alphabet</option>
- 		<option value="graphemes">Language Sounds (Graphemes)</option>
+		<option value="alphabet">Alphabet</option>
+		<option value="graphemes">Sounds (Graphemes)</option>
 		<!--option value="asciiPane">ASCII</option-->
 	</select>
 	<div style="float: right">
@@ -129,191 +94,188 @@
 			<span id="ipaLetterSeq"></span>
 			<button onclick="addIPAText(' ')">⌴ ➕</button>
 			<button onclick="addIPAText(null)">❌</button>
-			 &nbsp;&nbsp;&nbsp;
-	 	</span>
+			&nbsp;&nbsp;&nbsp;
+		</span>
 		<!-- AddToAny BEGIN -->
 		<a class="a2a_dd" href="https://www.addtoany.com/share"><img src="https://static.addtoany.com/buttons/share_save_171_16.png" width="200" height="20" alt="Share"></a>
 		<script async src="https://static.addtoany.com/menu/page.js"></script>
 		<!-- AddToAny END -->
 		&nbsp;&nbsp;&nbsp;
 	</span>
-	<br><br>
 </div>
-<div id="facePane" class="keyboard">
-
-	<svg>
-		<defs>
-		    <marker id="arrow" viewBox="0 0 20 20" refX="5" refY="5"
-		        markerWidth="6" markerHeight="6"
-		        orient="auto-start-reverse">
-		      <path d="M 0 0 L 10 5 L 0 10 z" fill="dodgerblue" />
-		    </marker>
-		</defs>
-	</svg>
-	
-	<svg id="imageSpeechPic" style="position:fixed; top:2em; left:0; height:95%; width:100%; border: solid grey .1em" viewBox="190 40 950 480">
+<div style="display: flex; margin-top: 2em;">
+	<div id="soundMenu"></div>
+	<div id="facePane" class="keyboard">
+		<svg id="imageSpeechPic" style="position:fixed; top:2em; left:20%; width:80%; height:95%;" viewBox="190 70 820 430">
+			<g id="imageSpeech">
+				<path id="sideFaceImg" d="m5069.8,5000.8c-632,-49.8 -1221.9,-201.1 -1706.5,-436.7c-836.9,-406 -1354.1,-1061 -1539.8,-1944c-28.7,-143.6 -44,-314.1 -57.5,-670.3c-24.9,-697.1 -49.8,-794.8 -316,-1235.3c-159,-264.3 -409.9,-775.7 -425.2,-867.6c-17.2,-109.2 38.3,-233.7 134.1,-296.8c76.6,-51.7 84.3,-51.7 438.6,-57.5l360.1,-7.7l-3.8,-691.4c-5.7,-792.9 -6,-953.3 -10.2,-1158.7c-4.2,-205.4 -59.9,-340.2 109.9,-479c169.8,-138.8 760.3,-84.1 1269.7,-93.6l453.9,-9.6l0,-792.9c0,-882.9 0,-881 126.4,-976.8l70.9,-55.5l2078,-5.8c2043.6,-3.8 2080,-3.8 2156.6,34.5c97.7,46 160.9,137.9 176.2,250.9c15.3,105.3 -9.6,164.7 -166.6,425.2c-360.1,589.9 -507.5,1154.9 -455.8,1739c46,543.9 195.4,953.8 595.6,1645.2c222.2,383 270,476.9 350.5,687.6c136,352.4 199.2,714.4 250.9,1400c34.5,476.9 23,701 -51.7,1051.5c-272,1256.4 -1300.4,2237 -2622,2499.4c-335.3,67 -760.4,82.3 -1216.3,45.9z" fill="#fffff0" stroke="black" color="#FBF6E9" stroke-width="10" transform="translate(80,100) scale(0.12,-0.12) " />
+				<g id="lipsImg" transform="translate(242,150) scale(.75)">
+					<defs>
+						<g id="upper-center-lip">
+							<path id="right-upper-center-lip" d="M 75 -50 Q 100 -50 125 -30"/>
+							<use href="#right-upper-center-lip" transform="translate(150) scale(-1,1)"/>
+						</g>
+						<g id="upper-side-lip">
+							<line id="unrounded-left-lip" x1="135" y1="-22" x2="160" y2="-2" />
+							<use href="#unrounded-left-lip" transform="translate(150) scale(-1,1)"/>
+						</g>
+						
+						<g id="closed-lips">
+							<line x1="0" y1="0" x2="100" y2="0" />
+						</g>
+						
+						<g id="teeth-inserted-lips">
+							<polyline id="right-teeth-inserted-lips" transform="translate(10,-35)" points="100,275 110,245 140,260" />
+							<use href="#right-teeth-inserted-lips" transform="translate(191) scale(-1,1)">
+						</g>
+						
+						<g id="lower-center-lip">
+							<use href="#upper-center-lip" transform="scale(1, -1)">
+						</g>
+						<g id="lower-side-lip">
+							<use href="#upper-side-lip" transform="scale(1,-1)"/>	
+						</g>
+					</defs>
 		
-		<g id="imageSpeech">
-			
-			<path id="sideFaceImg" d="m5069.8,5000.8c-632,-49.8 -1221.9,-201.1 -1706.5,-436.7c-836.9,-406 -1354.1,-1061 -1539.8,-1944c-28.7,-143.6 -44,-314.1 -57.5,-670.3c-24.9,-697.1 -49.8,-794.8 -316,-1235.3c-159,-264.3 -409.9,-775.7 -425.2,-867.6c-17.2,-109.2 38.3,-233.7 134.1,-296.8c76.6,-51.7 84.3,-51.7 438.6,-57.5l360.1,-7.7l-3.8,-691.4c-5.7,-792.9 -6,-953.3 -10.2,-1158.7c-4.2,-205.4 -59.9,-340.2 109.9,-479c169.8,-138.8 760.3,-84.1 1269.7,-93.6l453.9,-9.6l0,-792.9c0,-882.9 0,-881 126.4,-976.8l70.9,-55.5l2078,-5.8c2043.6,-3.8 2080,-3.8 2156.6,34.5c97.7,46 160.9,137.9 176.2,250.9c15.3,105.3 -9.6,164.7 -166.6,425.2c-360.1,589.9 -507.5,1154.9 -455.8,1739c46,543.9 195.4,953.8 595.6,1645.2c222.2,383 270,476.9 350.5,687.6c136,352.4 199.2,714.4 250.9,1400c34.5,476.9 23,701 -51.7,1051.5c-272,1256.4 -1300.4,2237 -2622,2499.4c-335.3,67 -760.4,82.3 -1216.3,45.9z" fill="#fffff0" stroke="black" color="#FBF6E9" stroke-width="10" transform="translate(80,100) scale(0.12,-0.12) " />
-
-			<g id="lipsImg" transform="translate(242,150) scale(.75)">
-				<defs>
-					<g id="upper-center-lip">
-						<path id="right-upper-center-lip" d="M 75 -50 Q 100 -50 125 -30"/>
-						<use href="#right-upper-center-lip" transform="translate(150) scale(-1,1)"/>
-					</g>
-					<g id="upper-side-lip">
-						<line id="unrounded-left-lip" x1="135" y1="-22" x2="160" y2="-2" />
-						<use href="#unrounded-left-lip" transform="translate(150) scale(-1,1)"/>
-					</g>
-					
-					<g id="closed-lips">
-						<line x1="0" y1="0" x2="100" y2="0" />
-					</g>
-					
-					<g id="teeth-inserted-lips">
-						<polyline id="right-teeth-inserted-lips" transform="translate(10,-35)" points="100,275 110,245 140,260" />
-						<use href="#right-teeth-inserted-lips" transform="translate(191) scale(-1,1)">
-					</g>
-					
-					<g id="lower-center-lip">
-						<use href="#upper-center-lip" transform="scale(1, -1)">
-					</g>
-					<g id="lower-side-lip">
-						<use href="#upper-side-lip" transform="scale(1,-1)"/>	
-					</g>
-				</defs>
-	
-				<use href="#upper-center-lip" x="20" y="75" stroke="red" class="unrounded_open rounded_open lips mover"/>
-				<use href="#upper-side-lip" x="20" y="75" stroke="red" class="unrounded_open lips mover"/>
-	
-				<use href="#upper-center-lip" x="20" y="95" stroke="orange" class="unrounded_near_open lips mover"/>
-				<use href="#upper-side-lip" x="20" y="95" stroke="orange" class="unrounded_near_open lips mover"/>
-	
-				<use href="#upper-center-lip" class="rounded_open_mid unrounded_open_mid lips mover" x="20" y="115" stroke="yellow" />
-				<use href="#upper-side-lip" class="unrounded_open_mid lips mover" x="20" y="115" stroke="yellow" />
-	
-				<use href="#upper-center-lip" x="20" y="135" stroke="green" class="rounded_mid unrounded_mid lips mover"/>
-				<use href="#upper-side-lip" x="20" y="135" stroke="mediumvioletred" class="unrounded_mid lips mover"/>
-	
-				<use href="#upper-center-lip" x="20" y="155" stroke="blue" class="rounded_close_mid unrounded_close_mid lips mover"/>
-				<use href="#upper-side-lip" x="20" y="155" stroke="blue" class="unrounded_close_mid lips mover"/>
-	
-				<use href="#upper-center-lip" x="20" y="175" stroke="indigo" class="rounded_near_close unrounded_near_close lips mover"/>
-				<use href="#upper-side-lip" x="20" y="175" stroke="indigo" class="unrounded_near_close lips mover"/>
-	
-				<use href="#upper-center-lip" x="20" y="195" stroke="violet" class="rounded_close unrounded_close lips mover"/>
-				<use href="#upper-side-lip" x="20" y="195" stroke="violet" class="unrounded_close lips mover"/>
-
-				<use href="#closed-lips" class="bilabial labiodental lips mover" x="45" y="188" stroke="mediumvioletred"/>
-				
-				<use href="#teeth-inserted-lips" class="labiodental lips mover" x="0" y="-4" stroke="mediumvioletred" />
-
-				<use href="#lower-center-lip" x="20" y="335" stroke="red" class="unrounded_open rounded_open lips mover"/>
-				<use href="#lower-side-lip" x="20" y="335" stroke="red" class="unrounded_open lips mover"/>
-	
-				<use href="#lower-center-lip" x="20" y="315" stroke="orange" class="unrounded_near_open lips mover"/>
-				<use href="#lower-side-lip" x="20" y="315" stroke="orange" class="unrounded_near_open lips mover"/>
-	
-				<use href="#lower-center-lip" x="20" y="295" stroke="yellow" class="rounded_open_mid unrounded_open_mid lips mover"/>
-				<use href="#lower-side-lip" x="20" y="295" stroke="yellow" class="unrounded_open_mid lips mover"/>
-	
-				<use href="#lower-center-lip" x="20" y="275" stroke="green" class="rounded_mid unrounded_mid lips mover"/>
-				<use href="#lower-side-lip" x="20" y="275" stroke="mediumvioletred" class="unrounded_mid lips mover"/>
-	
-				<use href="#lower-center-lip" x="20" y="255" stroke="blue" class="rounded_close_mid unrounded_close_mid lips mover"/>
-				<use href="#lower-side-lip" x="20" y="255" stroke="blue" class="unrounded_close_mid lips mover"/>
-	
-				<use href="#lower-center-lip" x="20" y="235" stroke="indigo" class="rounded_near_close unrounded_near_close lips mover"/>
-				<use href="#lower-side-lip" x="20" y="235" stroke="indigo" class="unrounded_near_close lips mover"/>
-	
-				<use href="#lower-center-lip" x="20" y="215" stroke="violet" class="rounded_close unrounded_close lips mover"/>
-				<use href="#lower-side-lip" x="20" y="215" stroke="violet" class="unrounded_close lips mover"/>
-			</g>
+					<use href="#upper-center-lip" x="20" y="75" stroke="red" class="unrounded_open rounded_open lips mover"/>
+					<use href="#upper-side-lip" x="20" y="75" stroke="red" class="unrounded_open lips mover"/>
 		
-			<g id="tongueImg" height="400" width="400" transform="translate(420,180) scale(4)">
-				<g id="mouthTop">
-					<path id="teeth" transform="translate(-12, -21) scale(.1)" stroke="palevioletred" fill="transparent" stroke-width="10" stroke-linecap="round" d="M 50 300 Q 50 200 50 200 Q 100 150 150 200 L 150 300 L 150 200 Q 200 150 250 200 L 250 300 L 50 300"/>
+					<use href="#upper-center-lip" x="20" y="95" stroke="orange" class="unrounded_near_open lips mover"/>
+					<use href="#upper-side-lip" x="20" y="95" stroke="orange" class="unrounded_near_open lips mover"/>
 		
-					<path id="mouthRoof" transform="scale(0.31 .2) translate(-170 -260)" d="M 360 220 Q 260 200 235 230 Q 240 270 220 240 Q 220 280 200 240 Q 260 180 366 213 Q 440 230 455 240 Q 440 300 440 240 Z" fill="palevioletred"/>
+					<use href="#upper-center-lip" class="rounded_open_mid unrounded_open_mid lips mover" x="20" y="115" stroke="yellow" />
+					<use href="#upper-side-lip" class="unrounded_open_mid lips mover" x="20" y="115" stroke="yellow" />
+		
+					<use href="#upper-center-lip" x="20" y="135" stroke="green" class="rounded_mid unrounded_mid lips mover"/>
+					<use href="#upper-side-lip" x="20" y="135" stroke="green" class="unrounded_mid lips mover"/>
+		
+					<use href="#upper-center-lip" x="20" y="155" stroke="blue" class="rounded_close_mid unrounded_close_mid lips mover"/>
+					<use href="#upper-side-lip" x="20" y="155" stroke="blue" class="unrounded_close_mid lips mover"/>
+		
+					<use href="#upper-center-lip" x="20" y="175" stroke="indigo" class="rounded_near_close unrounded_near_close lips mover"/>
+					<use href="#upper-side-lip" x="20" y="175" stroke="indigo" class="unrounded_near_close lips mover"/>
+		
+					<use href="#upper-center-lip" x="20" y="195" stroke="violet" class="rounded_close unrounded_close lips mover"/>
+					<use href="#upper-side-lip" x="20" y="195" stroke="violet" class="unrounded_close lips mover"/>
+	
+					<use href="#closed-lips" class="bilabial labiodental lips mover" x="45" y="188" stroke="mediumvioletred"/>
+					
+					<use href="#teeth-inserted-lips" class="labiodental lips mover" x="0" y="-4" stroke="mediumvioletred" />
+	
+					<use href="#lower-center-lip" x="20" y="335" stroke="red" class="unrounded_open rounded_open lips mover"/>
+					<use href="#lower-side-lip" x="20" y="335" stroke="red" class="unrounded_open lips mover"/>
+		
+					<use href="#lower-center-lip" x="20" y="315" stroke="orange" class="unrounded_near_open lips mover"/>
+					<use href="#lower-side-lip" x="20" y="315" stroke="orange" class="unrounded_near_open lips mover"/>
+		
+					<use href="#lower-center-lip" x="20" y="295" stroke="yellow" class="rounded_open_mid unrounded_open_mid lips mover"/>
+					<use href="#lower-side-lip" x="20" y="295" stroke="yellow" class="unrounded_open_mid lips mover"/>
+		
+					<use href="#lower-center-lip" x="20" y="275" stroke="green" class="rounded_mid unrounded_mid lips mover"/>
+					<use href="#lower-side-lip" x="20" y="275" stroke="green" class="unrounded_mid lips mover"/>
+		
+					<use href="#lower-center-lip" x="20" y="255" stroke="blue" class="rounded_close_mid unrounded_close_mid lips mover"/>
+					<use href="#lower-side-lip" x="20" y="255" stroke="blue" class="unrounded_close_mid lips mover"/>
+		
+					<use href="#lower-center-lip" x="20" y="235" stroke="indigo" class="rounded_near_close unrounded_near_close lips mover"/>
+					<use href="#lower-side-lip" x="20" y="235" stroke="indigo" class="unrounded_near_close lips mover"/>
+		
+					<use href="#lower-center-lip" x="20" y="215" stroke="violet" class="rounded_close unrounded_close lips mover"/>
+					<use href="#lower-side-lip" x="20" y="215" stroke="violet" class="unrounded_close lips mover"/>
 				</g>
-	
-			  <line id="tongueRest" class="rest mover tongue" x1="10" y1="55" x2="45" y2="55" />
-  
-			  <line class="dental mover tongue" x1="2" y1="16" x2="20" y2="26" />
-			  <line class="dental front mover tongue" x1="23" y1="30" x2="35" y2="45" />
-  
-			  <line class="alveolar mover tongue" x1="18" y1="3" x2="30" y2="20" />
-			  <line class="alveolar near_front mover tongue" x1="32" y1="25" x2="42" y2="45" />
-  
-  			  <path class="retroflex mover tongue" d="M 32 -2 Q 30 10 50 45" fill="transparent"/>
-				  
-			  <line class="post_alveolar mover tongue" x1="37" y1="-2" x2="49" y2="17" />
-			  <line class="post_alveolar central mover tongue" x1="50" y1="22" x2="55" y2="45" />
-  
-			  <line class="palatal mover tongue" x1="58" y1="-1" x2="65" y2="18" />
-			  <line class="palatal near_back mover tongue" x1="65" y1="23" x2="60" y2="45" />
-  
-			  <line class="velar mover tongue" x1="75" y1="0" x2="80" y2="20" />
-			  <line class="velar back mover tongue" x1="80" y1="25" x2="65" y2="45" />
-			</g>
+			
+				<g id="tongueImg" height="400" width="400" transform="translate(420,180) scale(4)">
+					<g id="mouthTop">
+						<path id="teeth" transform="translate(-12, -21) scale(.1)" stroke="palevioletred" fill="transparent" stroke-width="10" stroke-linecap="round" d="M 50 300 Q 50 200 50 200 Q 100 150 150 200 L 150 300 L 150 200 Q 200 150 250 200 L 250 300 L 50 300"/>
+			
+						<path id="mouthRoof" transform="scale(0.31 .2) translate(-170 -260)" d="M 360 220 Q 260 200 235 230 Q 240 270 220 240 Q 220 280 200 240 Q 260 180 366 213 Q 440 230 455 240 Q 440 300 440 240 Z" fill="palevioletred"/>
+					</g>
 		
-			<g id="throatImg" transform="translate(720,360) scale(.6)">
-			  <defs>
-				<circle id="throatUnvoiced" cx="50" cy="50" r="70" />
-				<path id="throatVoiced" transform="translate(-40,200) scale(.9,-.5)" d="M 100 400 Q 150 350 100 300 Q 50 250 100 200 " />
-			  </defs>
-			  <use href="#throatUnvoiced" class="unvoiced throat mover"/>
-			  <use href="#throatVoiced" class="voiced throat mover"/>
+				  <line id="tongueRest" class="rest mover tongue" x1="10" y1="55" x2="45" y2="55" />
+	  
+				  <line class="dental mover tongue" x1="2" y1="16" x2="20" y2="26" />
+				  <line class="dental front mover tongue" x1="23" y1="30" x2="35" y2="45" />
+	  
+				  <line class="alveolar mover tongue" x1="18" y1="3" x2="30" y2="20" />
+				  <line class="alveolar near_front mover tongue" x1="32" y1="25" x2="42" y2="45" />
+	  
+					<path class="retroflex mover tongue" d="M 32 -2 Q 30 10 50 45" fill="transparent"/>
+					  
+				  <line class="post_alveolar mover tongue" x1="37" y1="-2" x2="49" y2="17" />
+				  <line class="post_alveolar central mover tongue" x1="50" y1="22" x2="55" y2="45" />
+	  
+				  <line class="palatal mover tongue" x1="58" y1="-1" x2="65" y2="18" />
+				  <line class="palatal near_back mover tongue" x1="65" y1="23" x2="60" y2="45" />
+	  
+				  <line class="velar mover tongue" x1="75" y1="0" x2="80" y2="20" />
+				  <line class="velar back mover tongue" x1="80" y1="25" x2="65" y2="45" />
+				</g>
+			
+				<g id="throatImg" transform="translate(690,370) scale(.5)">
+				  <defs>
+					<circle id="throatUnvoiced" cx="50" cy="50" r="70" />
+					<path id="throatVoiced" transform="translate(-40,200) scale(.9,-.5)" d="M 100 400 Q 150 350 100 300 Q 50 250 100 200 " />
+				  </defs>
+				  <use href="#throatUnvoiced" class="unvoiced throat mover"/>
+				  <use href="#throatVoiced" class="voiced throat mover"/>
+				</g>
+				
+				<g id="breathImg" transform="translate(940,90) scale(.6)">
+					<defs>
+		
+						<line id="open-breath"  x1="35" y1="-10" x2="100" y2="-10"     />
+	
+						<path id="glide-approximant-breath" d="M 0 0 Q 50 -50 100 0"  />
+	
+						<g id="lateral-approximant-breath" >
+							<line  x1="0" y1="0" x2="100" y2="20"     />
+							<line  x1="0" y1="40" x2="100" y2="20"     />
+						</g>
+	
+						<path id="sibilant-affricate-breath" transform="translate(0,-50)" d="M 0 50 L 50 75 Q 75 25 100 75"  />
+	
+						<path id="non-sibilant-fricative-breath" transform="translate(0, -50)" d="M 0 75 L 50 75 Q 75 25 100 75" />
+	
+						<path id="sibilant-fricative-breath" d="M 0 0 Q 25 25 50 0 Q 75 -25 100 0"  />
+	
+						<polyline id="tap-breath" points="0,0 50,-50 100,0" />
+		
+						<polyline id="trill-breath" points="0,0 35,-40 50,-25 65,-40 100,0"  />
+	
+						<g id="plosive-breath" >
+							<path d="M 0 0 Q 20 20 40 20 Q 40 0 60 0 Q 90 0 90 25 "  />
+							<path d="M 0 40 Q 20 20 40 20" />
+						</g>
+	
+						<line id="nasal-breath" x1="0" y1="0" x2="80" y2="-60" />
+					</defs>
+					<use href="#nasal-breath" x="0" y="0" class="nasal breath mover"/>				
+					<use href="#glide-approximant-breath" x="0" y="50"  class="glide_approximant breath mover"/>
+					<use href="#lateral-approximant-breath" x="0" y="100" class="lateral_approximant breath mover"/>
+					<use href="#sibilant-affricate-breath" x="0" y="180" class="sibilant_affricate breath mover"/>
+					<use href="#non-sibilant-fricative-breath" x="0" y="250" class="non_sibilant_fricative breath mover"/>
+					<use href="#sibilant-fricative-breath" x="0" y="350" class="sibilant_fricative breath mover"/>
+					<use href="#tap-breath" x="0" y="450" class="tap breath mover"/>
+					<use href="#trill-breath" x="0" y="540" class="trill breath mover"/>
+					<use href="#plosive-breath" x="0" y="600" class="plosive breath mover"/>
+					<use href="#open-breath" x="0" y="700" class="open breath mover"/>
+					<use id="bigBreath" class="breath" x="-120" y="210" transform="scale(2.3)"/>
+				</g>
 			</g>
 			
-			<g id="breathImg" transform="translate(940,90) scale(.6)">
-				<defs>
-	
-					<line id="open-breath"  x1="35" y1="-10" x2="100" y2="-10"     />
-
-					<path id="glide-approximant-breath" d="M 0 0 Q 50 -50 100 0"  />
-
-					<g id="lateral-approximant-breath" >
-						<line  x1="0" y1="0" x2="100" y2="20"     />
-						<line  x1="0" y1="40" x2="100" y2="20"     />
-					</g>
-
-					<path id="sibilant-affricate-breath" transform="translate(0,-50)" d="M 0 50 L 50 75 Q 75 25 100 75"  />
-
-					<path id="non-sibilant-fricative-breath" transform="translate(0, -50)" d="M 0 75 L 50 75 Q 75 25 100 75" />
-
-					<path id="sibilant-fricative-breath" d="M 0 0 Q 25 25 50 0 Q 75 -25 100 0"  />
-
-					<polyline id="tap-breath" points="0,0 50,-50 100,0" />
-	
-					<polyline id="trill-breath" points="0,0 35,-40 50,-25 65,-40 100,0"  />
-
-					<g id="plosive-breath" >
-						<path d="M 0 0 Q 20 20 40 20 Q 40 0 60 0 Q 90 0 90 25 "  />
-						<path d="M 0 40 Q 20 20 40 20" />
-					</g>
-
-					<line id="nasal-breath" x1="0" y1="0" x2="80" y2="-60" />
-				</defs>
-				<use href="#nasal-breath" x="0" y="0" class="nasal breath mover"/>				
-				<use href="#glide-approximant-breath" x="0" y="50"  class="glide_approximant breath mover"/>
-				<use href="#lateral-approximant-breath" x="0" y="100" class="lateral_approximant breath mover"/>
-				<use href="#sibilant-affricate-breath" x="0" y="180" class="sibilant_affricate breath mover"/>
-				<use href="#non-sibilant-fricative-breath" x="0" y="250" class="non_sibilant_fricative breath mover"/>
-				<use href="#sibilant-fricative-breath" x="0" y="350" class="sibilant_fricative breath mover"/>
-				<use href="#tap-breath" x="0" y="450" class="tap breath mover"/>
-				<use href="#trill-breath" x="0" y="540" class="trill breath mover"/>
-				<use href="#plosive-breath" x="0" y="600" class="plosive breath mover"/>
-				<use href="#open-breath" x="0" y="700" class="open breath mover"/>
-				<use id="bigBreath" class="breath" x="-110" y="120" transform="scale(2.3)"/>
-			</g>
-		</g>
-		
-		<text id="displayLetter" text-anchor="middle" x="600" y="100" style="fill: grey; font: 3em sans-serif;" ></text>
-		<use id="displayImageLetter" transform="translate(350, 90) scale(.1)">
-	</svg>
+			<text id="displayLetter" text-anchor="middle" x="600" y="100" style="fill: grey; font: 3em sans-serif;" ></text>
+			<use id="displayImageLetter" transform="translate(350, 90) scale(.1)">
+		</svg>
+		<svg>
+			<defs>
+				<marker id="arrow" viewBox="0 0 20 20" refX="5" refY="5"
+					markerWidth="6" markerHeight="6"
+					orient="auto-start-reverse">
+				  <path d="M 0 0 L 10 5 L 0 10 z" fill="dodgerblue" />
+				</marker>
+			</defs>
+		</svg>
+	</div>
 </div>
 
 <div id="asciiPane" class="keyboard" style="display: none">
@@ -328,9 +290,21 @@
 <div id="tablePane" class="keyboard" style="display: none">
 	<table id="speechKeyboard" border="1px solid black"></table>
 </div>
-<script src="common/ipa.js"></script>
-<script>
+<iframe 
+	id="soundVideo" 
+	style="border: 4px solid grey; position: fixed; top: 2.5em; right: 6.5em;" 
+	width="280" 
+	height="160" 
+	src="https://www.youtube-nocookie.com/embed/dfoRdKuPF9I" 
+	title="YouTube video player" 
+	frameborder="0" 
+	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+	allowfullscreen>
+</iframe>
 
+<script src="common/ipa.js"></script>
+
+<script>
 // ------------ Face Keyboard ------------------------
 
 	let isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/)
@@ -342,18 +316,28 @@
 		"ipa": "Articulation (airflow, lips, tongue, vocal cords)",
 		"graphemes": "Grapheme"
 	}
-    let ipaSentence = "",
-		selectedFaceIPA,
-		selectedFaceSpeechCodePart = [], 
-		prevSelectedFaceSpeechCodePart,
-		selectedKeyboardOption = "facePane",
-		selectedLanguage = "nl",
-		locUrl = new URL(location), 
-		ipaText = locUrl.searchParams.get('ipa'),
-		speechCodeChoices = {},
-		selClass = 'selImgPart',
-		bigBreathElem
-	
+	let langSelector = document.getElementById("langSelector")
+	let viewSelector = document.getElementById("viewSelector")
+    let ipaSentence = ""
+	let selectedFaceIPA
+	let selectedFaceSpeechCodePart = []
+	let prevSelectedFaceSpeechCodePart
+	let selectedKeyboardOption = "facePane"
+	let selectedLanguage = langSelector.options[langSelector.selectedIndex].value
+	let locUrl = new URL(location)
+	let ipaText = locUrl.searchParams.get('ipa')
+	let speechCodeChoices = {}
+	let selClass = 'selImgPart'
+	let bigBreathElem
+
+	initViewSelector()
+
+	function initViewSelector() {
+		let disabled = selectedLanguage === 'ipa' ? "disabled" : ""
+		document.querySelector("#viewSelector option[value='alphabet']").disabled = disabled
+		document.querySelector("#viewSelector option[value='graphemes']").disabled = disabled
+	}
+
     if (ipaText) {
 		addIPAText(ipaText, true)
     }
@@ -390,21 +374,33 @@
 		imageAlphabet.appendChild(imageLetter)
 	})
 	clearSelectedElems()
-	generateSoundSelector()
-	
-	function generateSoundSelector() {
-		let dropdown = document.querySelector('#selectLetter .dropdown-content')
-		dropdown.innerHTML = ""
-		let dgrid = []
-		addLetters(dgrid, "ipa")
-		dgrid.forEach(row => {
-			let item = document.createElement('div')
-			item.classList.add('option')
-			item.value = row[row.length - 1] // ipa letter
-			item.innerHTML = getDisplayLetter(item.value, true, true)
-			item.addEventListener("click", e => playSpeechCode(ipa[e.target.value].speechCode))
-			dropdown.appendChild(item)
-		})
+	generateSoundMenu()
+
+	let selectedSoundMenuItem
+
+	function generateSoundMenu() {
+		let menu = document.querySelector('#soundMenu')
+		menu.innerHTML = ""
+		getSounds("ipa").forEach(soundData => addRow(soundData, menu))
+	}
+
+	function addRow(soundData, parent) {
+		let item = document.createElement('div')
+		item.style.cursor = "pointer"
+		item.onmouseover = () => item.style.border = "1px black solid"
+		item.onmouseout = () => item.style.border = ""
+		item.onclick = () => {
+			playSpeechCode(ipa[item.value].speechCode)
+			if (selectedSoundMenuItem)
+				selectedSoundMenuItem.style.backgroundColor = ""
+			selectedSoundMenuItem = item
+			selectedSoundMenuItem.style.backgroundColor = "beige"
+		}
+		item.value = soundData.ipa
+		item.innerHTML = '<button onclick="addIPAText(selectedFaceIPA)">➕</button>' 
+			+ getDisplayLetter(soundData.ipa, true, true) 
+			+ ' ' + (ipa[soundData.ipa] && ipa[soundData.ipa].video ? '🎬' : '')
+		parent.appendChild(item)
 	}
 	
 	// addIPAText
@@ -478,36 +474,38 @@
 		}
 		return false
   }
-  
+  document.getElementById("displayImageLetter").href.baseVal = '#imageSpeech'
+		
   function playSpeechCode(speechCode) {
 		selectElemsBySpeechCode(speechCode)
 		selectedFaceIPA = speechCodes[speechCode].ipa
-		if (document.getElementById("speechPlayer").style.display === 'none') {
-			document.getElementById("speechPlayer").style.display = 'inline'
-			document.getElementById("selectLetter").style.display = 'inline'
-			document.getElementById("displayImageLetter").href.baseVal = '#imageSpeech'
-		}
 		setDisplayLetter(selectedFaceIPA)
 		playIPA(selectedFaceIPA)
   }
   
   function setDisplayLetter(ipaLetter) {
-		document.getElementById("addLetter").innerHTML = getDisplayLetter(ipaLetter, true, true)
 		document.getElementById("displayLetter").innerHTML = getDisplayLetter(ipaLetter, true)
   }
   
   function getDisplayLetter(ipaLetter, showIPA, showIPAImage) {
 	let langTxt
-	if (selectedLanguage === 'ipa') {
-		langTxt = ""
-	} else if (ipa[ipaLetter] && ipa[ipaLetter].langs && ipa[ipaLetter].langs[selectedLanguage] && ipa[ipaLetter].langs[selectedLanguage].graphemes) {
+	if (selectedLanguage !== 'ipa' 
+		&& ipa[ipaLetter] 
+		&& ipa[ipaLetter].langs 
+		&& ipa[ipaLetter].langs[selectedLanguage] 
+		&& ipa[ipaLetter].langs[selectedLanguage].graphemes) {
 		langTxt = ipa[ipaLetter].langs[selectedLanguage].graphemes.toString()
 	} else {
-		langTxt = '?'	
-	} 
+		langTxt = ''
+	}
 	let dispLetter = langTxt === ipaLetter ? ipaLetter : langTxt
-	if (langTxt !== ipaLetter && showIPA)
-		dispLetter += ` /${ipaLetter}/`
+	if (showIPA) {
+		if (langTxt !== ipaLetter) {
+			dispLetter = `<span style='color: orange'>${dispLetter}</span> /${ipaLetter}/`
+		} else {
+			dispLetter = `<span style='color: orange'>${ipaLetter}</span>`
+		}
+	}
 	if (showIPA && showIPAImage)
 		dispLetter = ` ${getVisualScript(ipaLetter)} ${dispLetter}`
 	return dispLetter
@@ -681,17 +679,28 @@
 	
 	function playIPAIndexFunc() {
 		if (ipaArray && ipaIdx < ipaArray.length) {
-			let w = ipaArray[ipaIdx].trim()
+			let ipaSym = ipaArray[ipaIdx].trim()
 			ipaIdx++
-			if (ipa[w] && ipa[w].audio && !(isSafari || iOS)){
-				playIPAVoiceSamples(w)
-			} else if (w !== '') {
-				playComputerGeneratedIPAVoice(w)
-			} else {	// w === ''
+			if (ipaSym === ''){
 				playIPAIndex()
+			} else {
+				if (ipa[ipaSym] && ipa[ipaSym].video) {
+					playSoundVideo(ipa[ipaSym].video)
+				}
+				if (ipa[ipaSym] && ipa[ipaSym].audio && !(isSafari || iOS)) {
+					playSounds(ipa[ipaSym].audio)
+				} else {
+					playComputerGeneratedIPAVoice(ipaSym)
+				}
 			}
 		}
 	}
+
+	function playSoundVideo(videoLink) {
+		let soundVideoIframe = document.getElementById("soundVideo")
+		soundVideoIframe.src = videoLink
+	}
+
 	function playIPAIndex() {
 		if (ipaArray)
 			if (ipaIdx === 0) {
@@ -701,19 +710,16 @@
 			}
 	}
 	
-	function playIPAVoiceSamples(text) {
-		//let playlist = []
-		if (ipa[text] && ipa[text].audio) {
-			let audio = new Audio()
-			audio.src = ipa[text].audio
-			audio.addEventListener("ended", playIPAIndex)
-			audio.play().catch(error => {
-		        // Auto-play was prevented
-		        // Show a UI element to let the user manually start playback
-		    }).then(() => {
-		        // Auto-play started
-		    })
-		}
+	function playSounds(audioLink) {
+		let audio = new Audio()
+		audio.src = audioLink
+		audio.addEventListener("ended", playIPAIndex)
+		audio.play().catch(error => {
+			// Auto-play was prevented
+			// Show a UI element to let the user manually start playback
+		}).then(() => {
+			// Auto-play started
+		})
 	}
 	
 	function hasIPA(text) {
@@ -727,11 +733,8 @@
 	}
 		 
 	function selectLanguage(e) {
-		if (e.target.value === "more") {
-			alert('We are looking for contributors. Interested? Please submit your work via a pull request at https://github.com/ajc5/ipa-speech-face. Thanks.')
-			e.target.value = selectedLanguage
-		}
 		selectedLanguage = e.target.value
+		initViewSelector()
 		setLanguageInUI(getSelectedKeyboardId())
 	}
 	
@@ -743,14 +746,7 @@
 		selectedKeyboardOption = e.target.value
 		let selKeyboardId = getSelectedKeyboardId()
 		document.querySelectorAll('.keyboard').forEach(kb => kb.style.display = kb.id === selKeyboardId ? 'block' : 'none')
-		if (selKeyboardId === "facePane") {
-			if (document.getElementById("addLetter").innerHTML !== '🗣️')
-				document.getElementById('speechPlayer').style.display = 'inline'
-			document.getElementById("selectLetter").style.display = 'inline'
-		} else {
-			document.getElementById('speechPlayer').style.display = 'none'
-			document.getElementById("selectLetter").style.display = 'none'
-		}
+		document.getElementById("soundMenu").style.display = selKeyboardId === "facePane" ? 'block' : 'none'
 		setLanguageInUI(selKeyboardId)
 	}
 	
@@ -758,47 +754,72 @@
 		if (selKeyboardId === "tablePane") {
 			generateDataAndSpeechTable()
 		}
-		generateSoundSelector()
+		generateSoundMenu()
 		addIPAText()
 		if (selectedFaceIPA)
 			setDisplayLetter(selectedFaceIPA)
 	}
 	
 	function generateDataAndSpeechTable() {
-		let dataGrid = []
+		let sounds = []
 		if (selectedKeyboardOption === 'graphemes' || selectedLanguage === 'ipa') {
-			dataGrid.push([wordLists[selectedLanguage], 'Visual Speech', 'IPA'])
+			sounds.push({
+				word: wordLists[selectedLanguage],
+				visual: 'Visual Speech', 
+				ipa: 'IPA'
+			})
 			Object.entries(graphemes[selectedLanguage]).forEach(([grapheme, ipas]) => {
 				ipas.forEach(ipa => {
-					dataGrid.push([selectedLanguage === 'ipa' ? getFormattedSpeechCode(grapheme) : grapheme, getVisualScript(ipa), ipa])
+					sounds.push({
+						word: selectedLanguage === 'ipa' ? getFormattedSpeechCode(grapheme) : grapheme,
+						visual: getVisualScript(ipa), 
+						ipa: ipa
+					})
 				})
 			})
 		} else { // selectedKeyboardOption === 'alphabet'
-			dataGrid.push([wordLists[selectedLanguage], wordLists[getTransliterationLang(selectedLanguage)], 'Visual Speech', 'IPA'])
-			addLetters(dataGrid, selectedLanguage)
+			sounds.push({
+				word: wordLists[selectedLanguage], 
+				translit: wordLists[getTransliterationLang(selectedLanguage)], 
+				visual: 'Visual Speech', 
+				ipa: 'IPA'
+			})
+			addSounds(selectedLanguage, sounds)
 		}
-		generateSpeechTable(dataGrid, selectedLanguage)
+		generateSpeechTable(sounds, selectedLanguage)
 	}
 	
 	function getTransliterationLang(lang) {
 		return lang === "en" || lang === "ipa" ? "nl" : "en"
 	}
 	
-	function addLetters(dataGrid, lang) {
-		let translit = getTransliterationLang(lang)
-		let alphas = Object.entries(lang === "ipa" ? speechCodes : alphabets[lang])
+	function getSounds(language) {
+		let sounds = []
+		addSounds(language, sounds)
+		return sounds
+	}
+
+	function addSounds(language, sounds) {
+		let translit = getTransliterationLang(language)
+		let alphas = Object.entries(language === "ipa" ? speechCodes : alphabets[language])
 		for (let y = 0; y < alphas.length; y++) {
 			let [word, langs] = alphas[y]
 			let translitText = ""
-			if (langs[translit])
+			if (langs[translit]) {
 				translitText = langs[translit]
-			else if (langs.ipa 
+			} else if (langs.ipa 
 					&& ipa[langs.ipa] 
 					&& ipa[langs.ipa].langs
 					&& ipa[langs.ipa].langs[translit]
-					&& ipa[langs.ipa].langs[translit].graphemes)
+					&& ipa[langs.ipa].langs[translit].graphemes) {
 				translitText = ipa[langs.ipa].langs[translit].graphemes.toString()
-			dataGrid.push([lang === "ipa" ? getFormattedSpeechCode(word) : word, translitText, getVisualScript(langs.ipa), langs.ipa])
+			}
+			sounds.push({
+				word: language === "ipa" ? getFormattedSpeechCode(word) : word, 
+				translit: translitText, 
+				visual: getVisualScript(langs.ipa), 
+				ipa: langs.ipa
+			})
 		}
 	}
 
@@ -806,20 +827,20 @@
 		return word.replace(/:/gi, ', ').replace(/_/gi, '-')
 	}
 	
-	function generateSpeechTable(dataGrid) {
+	function generateSpeechTable(sounds) {
 		let table = document.getElementById("speechKeyboard")
 		table.querySelectorAll('tr').forEach(tr => tr.parentNode.removeChild(tr))
-		dataGrid.forEach((dataRow, i) => {
+		sounds.forEach((soundData, i) => {
 			let tr = document.createElement('tr')
 			let tdIdx = document.createElement('td')
 			if (i > 0)
 				tdIdx.innerHTML = `${i}.`
 			tr.appendChild(tdIdx)
 			let tdBtns = document.createElement('td')
-			let ipa = dataRow[dataRow.length - 1]
-			tdBtns.innerHTML = i === 0 ? '' : `<button  onclick="addIPAText('${ipa}')">➕</button> <button onclick='playIPA("${ipa}")'>▶️</button> `
+			let ipaSym = soundData.ipa
+			tdBtns.innerHTML = i === 0 ? '' : `<button  onclick="addIPAText('${ipaSym}')">➕</button> <button onclick='playIPA("${ipaSym}")'>▶️</button> `
 			tr.appendChild(tdBtns)
-			dataRow.forEach(dataCell => {
+			Object.values(soundData).forEach(dataCell => {
 				let td = document.createElement('td')
 				td.innerHTML = dataCell
 				tr.appendChild(td)
@@ -840,7 +861,6 @@
       if (uipa == null || uipa.length == 0) {
         return
       }
-
       //translate
       var mappings = [
         { 'src': /^\s*\//g, 'dest': '' },
