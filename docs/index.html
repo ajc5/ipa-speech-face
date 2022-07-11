@@ -21,8 +21,6 @@
 	  .selPart {
 		  border: solid black 2px;
 	  }
-	  .selImgPart {
-	  }
 	  .controlBarSelect {
 		  height: 2em;
 	  }
@@ -314,6 +312,7 @@
 		"ipa": "Articulation (airflow, lips, tongue, vocal cords)",
 		"graphemes": "Grapheme"
 	}
+	let facePane = document.getElementById("facePane")
 	let langSelector = document.getElementById("langSelector")
 	let viewSelector = document.getElementById("viewSelector")
 	let soundVideoIframe = document.getElementById("soundVideo")
@@ -330,6 +329,17 @@
 	let bigBreathElem
 
 	initViewSelector()
+
+	facePane.addEventListener('updateFace', ({detail: {speechCode}}) => {
+		selectElemsBySpeechCode(speechCode)
+		selectedFaceIPA = speechCodes[speechCode].ipa
+		setDisplayLetter(selectedFaceIPA)
+		playIPA(selectedFaceIPA)
+		if (selectedSoundMenuItem)
+			selectedSoundMenuItem.style.backgroundColor = ""
+		selectedSoundMenuItem = document.getElementById(`sound_${speechCode}`)
+		selectedSoundMenuItem.style.backgroundColor = "beige"
+	})
 
 	function initViewSelector() {
 		let disabled = selectedLanguage === 'ipa' ? "disabled" : ""
@@ -390,13 +400,11 @@
 		item.style.cursor = "pointer"
 		item.onmouseover = () => item.style.border = "1px black solid"
 		item.onmouseout = () => item.style.border = ""
-		item.onclick = () => {
-			playSpeechCode(speechCode)
-			if (selectedSoundMenuItem)
-				selectedSoundMenuItem.style.backgroundColor = ""
-			selectedSoundMenuItem = item
-			selectedSoundMenuItem.style.backgroundColor = "beige"
-		}
+		item.onclick = () => facePane.dispatchEvent(new CustomEvent('updateFace', {
+			detail: {
+				speechCode: speechCode
+			}
+		}))
 		item.value = soundData.ipa
 		item.innerHTML = '<button onclick="addIPAText(selectedFaceIPA)">➕</button>' 
 			+ getDisplayLetter(soundData.ipa, true, true) 
@@ -471,19 +479,15 @@
 				delete speechCodeChoices[controlValue]
 			else
 				speechCodeChoices[controlValue].shift()
-			//playSpeechCode(selSpeechCode)
-			document.getElementById(`sound_${selSpeechCode}`).click()
+			facePane.dispatchEvent(new CustomEvent('updateFace', {
+				detail: {
+					speechCode: selSpeechCode
+				}
+			}))
 		}
 		return false
   }
   document.getElementById("displayImageLetter").href.baseVal = '#imageSpeech'
-		
-  function playSpeechCode(speechCode) {
-		selectElemsBySpeechCode(speechCode)
-		selectedFaceIPA = speechCodes[speechCode].ipa
-		setDisplayLetter(selectedFaceIPA)
-		playIPA(selectedFaceIPA)
-  }
   
   function setDisplayLetter(ipaLetter) {
 		document.getElementById("displayLetter").innerHTML = getDisplayLetter(ipaLetter, true)
