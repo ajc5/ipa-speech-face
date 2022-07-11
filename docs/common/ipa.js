@@ -1,7 +1,4 @@
-
-// - show mri side cutout animation
-// - done - switch position of windpipe and air symbols
-// - show speech symbols as vertical menu on side in landscape view
+// show airflow relative to tongue instead of on the side. in visual alphabet, show teeth and palate positions.
 
 /*
 Format:
