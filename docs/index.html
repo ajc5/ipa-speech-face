@@ -292,14 +292,12 @@
 </div>
 <iframe 
 	id="soundVideo" 
-	style="border: 4px solid grey; position: fixed; top: 2.5em; right: 6.5em;" 
-	width="280" 
-	height="160" 
-	src="https://www.youtube-nocookie.com/embed/dfoRdKuPF9I" 
-	title="YouTube video player" 
+	style="position: fixed; top: 2.5em; right: 6.5em;" 
+	width="290" 
+	height="170" 
+	src="about:blank"
 	frameborder="0" 
-	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-	allowfullscreen>
+	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
 </iframe>
 
 <script src="common/ipa.js"></script>
@@ -318,7 +316,8 @@
 	}
 	let langSelector = document.getElementById("langSelector")
 	let viewSelector = document.getElementById("viewSelector")
-    let ipaSentence = ""
+	let soundVideoIframe = document.getElementById("soundVideo")
+   	let ipaSentence = ""
 	let selectedFaceIPA
 	let selectedFaceSpeechCodePart = []
 	let prevSelectedFaceSpeechCodePart
@@ -386,11 +385,13 @@
 
 	function addRow(soundData, parent) {
 		let item = document.createElement('div')
+		let speechCode = ipa[soundData.ipa].speechCode
+		item.id = `sound_${speechCode}`
 		item.style.cursor = "pointer"
 		item.onmouseover = () => item.style.border = "1px black solid"
 		item.onmouseout = () => item.style.border = ""
 		item.onclick = () => {
-			playSpeechCode(ipa[item.value].speechCode)
+			playSpeechCode(speechCode)
 			if (selectedSoundMenuItem)
 				selectedSoundMenuItem.style.backgroundColor = ""
 			selectedSoundMenuItem = item
@@ -399,7 +400,7 @@
 		item.value = soundData.ipa
 		item.innerHTML = '<button onclick="addIPAText(selectedFaceIPA)">➕</button>' 
 			+ getDisplayLetter(soundData.ipa, true, true) 
-			+ ' ' + (ipa[soundData.ipa] && ipa[soundData.ipa].video ? '🎬' : '')
+			+ ' ' + (ipa[soundData.ipa].video ? '🎬' : '')
 		parent.appendChild(item)
 	}
 	
@@ -470,7 +471,8 @@
 				delete speechCodeChoices[controlValue]
 			else
 				speechCodeChoices[controlValue].shift()
-			playSpeechCode(selSpeechCode)
+			//playSpeechCode(selSpeechCode)
+			document.getElementById(`sound_${selSpeechCode}`).click()
 		}
 		return false
   }
@@ -684,9 +686,7 @@
 			if (ipaSym === ''){
 				playIPAIndex()
 			} else {
-				if (ipa[ipaSym] && ipa[ipaSym].video) {
-					playSoundVideo(ipa[ipaSym].video)
-				}
+				playSoundVideo(ipaSym)
 				if (ipa[ipaSym] && ipa[ipaSym].audio && !(isSafari || iOS)) {
 					playSounds(ipa[ipaSym].audio)
 				} else {
@@ -696,9 +696,12 @@
 		}
 	}
 
-	function playSoundVideo(videoLink) {
-		let soundVideoIframe = document.getElementById("soundVideo")
-		soundVideoIframe.src = videoLink
+	function playSoundVideo(ipaSym) {			
+		if (ipa[ipaSym] && ipa[ipaSym].video) {
+			soundVideoIframe.src = ipa[ipaSym].video			
+		} else {
+			soundVideoIframe.contentWindow.location.replace('about:blank')
+		}
 	}
 
 	function playIPAIndex() {
