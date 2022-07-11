@@ -1,12 +1,7 @@
 
-// 1. DONE (mouth shape letters) - ipa transliteration (or direct?)
-// 2. ipa emoji hint (sound colors?)
-// 3. DONE - ipa mouth shapes (side/front)
-// 4. kareoke practice: write/speak in language to match
-// 5. STARTED - word emojis 
-// 6. word POS
-// 7. translation (by word and phrase)
-// 8. ipa letter audio, word audio
+// - show mri side cutout animation
+// - done - switch position of windpipe and air symbols
+// - show speech symbols as vertical menu on side in landscape view
 
 /*
 Format:
@@ -131,6 +126,7 @@ let ipaCommon = {
   },
   "y": {
     audio: "https://upload.wikimedia.org/wikipedia/commons/e/ea/Close_front_rounded_vowel.ogg",
+	video: "https://www.youtube-nocookie.com/embed/GK1i7kBsyhE?controls=0&modestbranding=1&rel=0&autoplay=1",
     langs: {
       en: {
         icon: "booger",
@@ -153,6 +149,7 @@ let ipaCommon = {
   },
   "x": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/0/0f/Voiceless_velar_fricative.ogg",
+	video: "https://www.youtube-nocookie.com/embed/8yx_wFuu--c?controls=0&modestbranding=1&rel=0&autoplay=1",
     langs: {
       en: {
         icon: "hummingbird",
@@ -205,7 +202,8 @@ let ipa = {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Open_front_rounded_vowel.ogg"
   },
   "ɒ": {
-	  audio: "https://upload.wikimedia.org/wikipedia/commons/3/31/PR-open_back_rounded_vowel.ogg"
+	  audio: "https://upload.wikimedia.org/wikipedia/commons/3/31/PR-open_back_rounded_vowel.ogg",
+	  video: "https://www.youtube-nocookie.com/embed/XkGIhq2P7GQ?controls=0&modestbranding=1&rel=0&autoplay=1"
   },
   "b": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Voiced_bilabial_plosive.ogg",
@@ -294,6 +292,7 @@ let ipa = {
   },
   "g": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/1/12/Voiced_velar_plosive_02.ogg",
+	video: "https://www.youtube-nocookie.com/embed/AAHHcPGgOrQ?controls=0&modestbranding=1&rel=0&autoplay=1",
     langs: {
       en: {
         icon: "year-of-goat",
@@ -343,6 +342,7 @@ let ipa = {
   }, 
   "k": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/e/e3/Voiceless_velar_plosive.ogg",
+	video: "https://www.youtube-nocookie.com/embed/fYEeL4zBibM?controls=0&modestbranding=1&rel=0&autoplay=1",
     langs: {
       en: {
         icon: "cup",
@@ -464,9 +464,10 @@ let ipa = {
   },
   "ʉ": {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/6/66/Close_central_rounded_vowel.ogg"
-  },	
+  },	// modestbranding=1&rel=0
   "ɯ": {
-	  audio: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Close_back_unrounded_vowel.ogg"
+	  audio: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Close_back_unrounded_vowel.ogg",
+	  video: "https://www.youtube-nocookie.com/embed/EFWzTtLeEyQ?controls=0&modestbranding=1&rel=0&autoplay=1"
   },
   "ʊ": {
 	  audio: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Near-close_near-back_rounded_vowel.ogg"
@@ -479,6 +480,7 @@ let ipa = {
   },
   "p": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/5/51/Voiceless_bilabial_plosive.ogg",
+	video: "https://www.youtube-nocookie.com/embed/JTADQGr6_ZQ?controls=0&modestbranding=1&rel=0&autoplay=1",
     langs: {
       en: {
         icon: "beach",
@@ -586,7 +588,8 @@ let ipa = {
     }
   },
   "ð": {
-	  audio: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Voiced_dental_fricative.ogg"
+	  audio: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Voiced_dental_fricative.ogg",
+	  video: "https://www.youtube-nocookie.com/embed/JgSdjlQG9j0?controls=0&modestbranding=1&rel=0&autoplay=1"
   },  
   "ʏ": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/e/e3/Near-close_near-front_rounded_vowel.ogg",
@@ -631,6 +634,7 @@ let ipa = {
   },
   "v": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/8/85/Voiced_labiodental_fricative.ogg",
+	video: "https://www.youtube-nocookie.com/embed/jZD6SX49xr8?controls=0&modestbranding=1&rel=0&autoplay=1",
     langs: {
       en: {
         icon: "vending-machine",
@@ -649,6 +653,7 @@ let ipa = {
   },
   "z": {
 	audio: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Voiced_alveolar_sibilant.ogg",
+	video: "https://www.youtube-nocookie.com/embed/LVlj-4lIGWM?controls=0&modestbranding=1&rel=0&autoplay=1",
     langs: {
       en: {
         icon: "archive",
