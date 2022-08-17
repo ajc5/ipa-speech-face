@@ -1,6 +1,10 @@
-// show airflow relative to tongue instead of on the side. in visual alphabet, show teeth and palate positions.
+// 
 
 /*
+TODO:
+- show airflow relative to tongue instead of on the side. in visual alphabet, show teeth and palate positions.
+- touchscreen four-slider keyboard to continously control articulators with four fingers that generate a speech or song voice
+
 Format:
 
 let ipa = {
